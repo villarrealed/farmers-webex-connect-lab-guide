@@ -436,6 +436,17 @@
             width: 14px;
             height: 14px;
         }
+
+        /* Screenshot Placeholder */
+        .screenshot-placeholder {
+            border: 2px dashed var(--cisco-orange);
+            background: #FFF8E7;
+            padding: 16px;
+            border-radius: 8px;
+            font-style: italic;
+            color: var(--cisco-gray);
+            margin: 16px 0;
+        }
     </style>
 </head>
 <body>
@@ -460,6 +471,7 @@
             <a href="#tour-pieces" class="nav-item">Tour the Pre-Built Pieces</a>
             <a href="#tour-trigger-page" class="nav-item level-2">Static Trigger Page</a>
             <a href="#tour-ai-agent" class="nav-item level-2">Pre-Built AI Agent</a>
+            <a href="#flow-builder-orientation" class="nav-item level-2">Flow Builder Orientation</a>
         </div>
 
         <div class="nav-section">
@@ -693,6 +705,288 @@
             <p>You don't need to build or modify this agent — your flow will just reference it by name in Module 5.</p>
             <div class="info-box">
                 <strong>Why pre-built?</strong> Building an AI Agent from scratch takes 30–45 minutes (that was Lab 1). For this lab, we're focusing on the orchestration layer — how Connect routes conversations to the right place.
+            </div>
+        </section>
+
+        <!-- MODULE 1.5 - FLOW BUILDER ORIENTATION -->
+        <section id="flow-builder-orientation">
+            <div class="module-header">
+                <h2>Module 1.5: Webex Connect Flow Builder Orientation</h2>
+                <span class="time">Estimated time: 5 minutes</span>
+                <p>Before you build, understand the tool. Connect's Flow Builder is different from AI Agent Studio.</p>
+            </div>
+
+            <h3>Webex Connect vs. AI Agent Studio</h3>
+            <div class="info-box">
+                <table style="width: 100%; border: none;">
+                    <thead>
+                        <tr>
+                            <th style="width: 50%; background: var(--cisco-blue);">AI Agent Studio (Lab 1)</th>
+                            <th style="width: 50%; background: var(--cisco-teal);">Webex Connect (This Lab)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="vertical-align: top;">
+                                <strong>Form-based builder</strong><br>
+                                You describe an agent's purpose, tools, and personality in natural language. One screen, minimal technical configuration.
+                            </td>
+                            <td style="vertical-align: top;">
+                                <strong>Visual drag-and-drop flow builder</strong><br>
+                                You assemble a flow from individual nodes (SMS, Receive, Branch, AI Agent, etc.). Multi-step orchestration across channels.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top;">
+                                <strong>Reactive</strong><br>
+                                Customer initiates the conversation (calls in, opens chat widget).
+                            </td>
+                            <td style="vertical-align: top;">
+                                <strong>Proactive + Reactive</strong><br>
+                                You can initiate conversations (send SMS, email) OR respond to inbound events.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="vertical-align: top;">
+                                <strong>Single channel focus</strong><br>
+                                Typically web chat or voice.
+                            </td>
+                            <td style="vertical-align: top;">
+                                <strong>Omnichannel orchestration</strong><br>
+                                SMS, WhatsApp, email, voice, web chat, Apple Messages, Facebook Messenger — all in one flow.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="margin-top: 12px;"><strong>Bottom line:</strong> Connect is the <strong>orchestration layer</strong> that decides <em>when and how</em> to invoke an AI Agent (and many other channels). Studio builds the brains; Connect builds the conversation around it.</p>
+            </div>
+
+            <h3>Anatomy of the Flow Builder UI</h3>
+            <p>The Flow Builder has 5 main regions. Here's what you'll see when you open a flow:</p>
+            
+            <svg width="100%" style="max-width: 720px; display: block; margin: 20px auto;" viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg">
+                <!-- Top Toolbar -->
+                <rect x="10" y="10" width="700" height="40" fill="#0F1729" stroke="#E2E8F0" stroke-width="2" rx="4"/>
+                <text x="20" y="35" fill="white" font-size="14" font-family="Arial, sans-serif">Flow Name: Renewal Flow 1</text>
+                <rect x="580" y="18" width="50" height="24" fill="#3070E7" rx="4"/>
+                <text x="590" y="35" fill="white" font-size="12" font-family="Arial, sans-serif">Save</text>
+                <rect x="640" y="18" width="60" height="24" fill="#22C55E" rx="4"/>
+                <text x="645" y="35" fill="white" font-size="12" font-family="Arial, sans-serif">Publish</text>
+                <circle cx="30" cy="30" r="14" fill="#FF9000"/>
+                <text x="30" y="35" fill="white" font-size="16" font-weight="bold" text-anchor="middle">1</text>
+
+                <!-- Left Sidebar (Node Palette) -->
+                <rect x="10" y="60" width="140" height="240" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="2" rx="4"/>
+                <text x="20" y="80" fill="#0F1729" font-size="12" font-weight="bold" font-family="Arial, sans-serif">Node Palette</text>
+                <rect x="20" y="90" width="120" height="20" fill="white" stroke="#E2E8F0" stroke-width="1" rx="3"/>
+                <text x="25" y="103" fill="#64748B" font-size="10" font-family="Arial, sans-serif">Search nodes...</text>
+                <text x="20" y="125" fill="#64748B" font-size="11" font-family="Arial, sans-serif">▼ Triggers</text>
+                <rect x="25" y="130" width="110" height="18" fill="#EBF2FF" stroke="#3070E7" stroke-width="1" rx="3"/>
+                <text x="30" y="142" fill="#0F1729" font-size="10" font-family="Arial, sans-serif">Inbound Webhook</text>
+                <text x="20" y="160" fill="#64748B" font-size="11" font-family="Arial, sans-serif">▼ Messaging</text>
+                <rect x="25" y="165" width="110" height="18" fill="white" stroke="#E2E8F0" stroke-width="1" rx="3"/>
+                <text x="30" y="177" fill="#0F1729" font-size="10" font-family="Arial, sans-serif">SMS</text>
+                <rect x="25" y="188" width="110" height="18" fill="white" stroke="#E2E8F0" stroke-width="1" rx="3"/>
+                <text x="30" y="200" fill="#0F1729" font-size="10" font-family="Arial, sans-serif">Receive</text>
+                <text x="20" y="220" fill="#64748B" font-size="11" font-family="Arial, sans-serif">▼ Logic</text>
+                <rect x="25" y="225" width="110" height="18" fill="white" stroke="#E2E8F0" stroke-width="1" rx="3"/>
+                <text x="30" y="237" fill="#0F1729" font-size="10" font-family="Arial, sans-serif">Branch</text>
+                <circle cx="30" cy="270" r="14" fill="#FF9000"/>
+                <text x="30" y="275" fill="white" font-size="16" font-weight="bold" text-anchor="middle">2</text>
+
+                <!-- Main Canvas -->
+                <rect x="160" y="60" width="380" height="240" fill="white" stroke="#E2E8F0" stroke-width="2" rx="4"/>
+                <text x="330" y="85" fill="#64748B" font-size="11" text-anchor="middle" font-family="Arial, sans-serif">Main Canvas (drag nodes here)</text>
+                <rect x="200" y="110" width="100" height="50" fill="#3070E7" stroke="#0F1729" stroke-width="2" rx="8"/>
+                <text x="250" y="138" fill="white" font-size="12" text-anchor="middle" font-family="Arial, sans-serif">Webhook</text>
+                <line x1="300" y1="135" x2="340" y2="135" stroke="#0F1729" stroke-width="2" marker-end="url(#arrowhead)"/>
+                <rect x="340" y="110" width="100" height="50" fill="#16BDEB" stroke="#0F1729" stroke-width="2" rx="8"/>
+                <text x="390" y="138" fill="white" font-size="12" text-anchor="middle" font-family="Arial, sans-serif">SMS</text>
+                <circle cx="330" cy="180" r="14" fill="#FF9000"/>
+                <text x="330" y="185" fill="white" font-size="16" font-weight="bold" text-anchor="middle">3</text>
+                <defs>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                        <polygon points="0 0, 10 3, 0 6" fill="#0F1729"/>
+                    </marker>
+                </defs>
+
+                <!-- Right Sidebar (Config Panel) -->
+                <rect x="550" y="60" width="160" height="240" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="2" rx="4"/>
+                <text x="560" y="80" fill="#0F1729" font-size="12" font-weight="bold" font-family="Arial, sans-serif">Node Configuration</text>
+                <text x="560" y="100" fill="#64748B" font-size="10" font-family="Arial, sans-serif">Destination *</text>
+                <rect x="560" y="105" width="140" height="20" fill="white" stroke="#E2E8F0" stroke-width="1" rx="3"/>
+                <text x="565" y="118" fill="#64748B" font-size="9" font-family="Arial, sans-serif">$(node.trigger.phone)</text>
+                <text x="560" y="140" fill="#64748B" font-size="10" font-family="Arial, sans-serif">From Number *</text>
+                <rect x="560" y="145" width="140" height="20" fill="white" stroke="#E2E8F0" stroke-width="1" rx="3"/>
+                <text x="565" y="158" fill="#64748B" font-size="9" font-family="Arial, sans-serif">+1-555-LAB-SEND</text>
+                <text x="560" y="180" fill="#64748B" font-size="10" font-family="Arial, sans-serif">Message *</text>
+                <rect x="560" y="185" width="140" height="60" fill="white" stroke="#E2E8F0" stroke-width="1" rx="3"/>
+                <text x="565" y="198" fill="#64748B" font-size="8" font-family="Arial, sans-serif">Hi Sarah, your policy...</text>
+                <circle cx="630" cy="270" r="14" fill="#FF9000"/>
+                <text x="630" y="275" fill="white" font-size="16" font-weight="bold" text-anchor="middle">4</text>
+
+                <!-- Bottom Toolbar -->
+                <rect x="10" y="310" width="700" height="40" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="2" rx="4"/>
+                <text x="20" y="333" fill="#64748B" font-size="11" font-family="Arial, sans-serif">Zoom: 100%</text>
+                <text x="120" y="333" fill="#64748B" font-size="11" font-family="Arial, sans-serif">Fit to Screen</text>
+                <text x="220" y="333" fill="#64748B" font-size="11" font-family="Arial, sans-serif">Undo / Redo</text>
+                <text x="320" y="333" fill="#64748B" font-size="11" font-family="Arial, sans-serif">Execution Log</text>
+                <circle cx="30" cy="330" r="14" fill="#FF9000"/>
+                <text x="30" y="335" fill="white" font-size="16" font-weight="bold" text-anchor="middle">5</text>
+            </svg>
+
+            <p><strong>Legend:</strong></p>
+            <ol>
+                <li><strong>Top Toolbar</strong> — Flow name, Save / Publish / Test buttons. You'll click Save frequently and Publish once before testing.</li>
+                <li><strong>Left Sidebar (Node Palette)</strong> — Categorized list of nodes (Triggers, Messaging, Logic, AI, etc.). Drag nodes from here onto the canvas.</li>
+                <li><strong>Main Canvas</strong> — Where you place nodes and connect them. This is your visual flow diagram.</li>
+                <li><strong>Right Sidebar (Node Configuration Panel)</strong> — Opens when you click a node. Shows the node's parameters (required fields marked with *).</li>
+                <li><strong>Bottom Toolbar</strong> — Zoom, fit-to-screen, undo/redo, execution log toggle. The execution log is your #1 debugging tool.</li>
+            </ol>
+
+            <h3>Adding a Node to the Canvas</h3>
+            <ol>
+                <li>In the left <strong>Node Palette</strong>, find the category (e.g., "Triggers", "Messaging")</li>
+                <li>Drag the node onto the canvas — OR — click the node to add it at the canvas center (Connect supports both depending on tenant version)</li>
+                <li>The node appears as a rounded rectangle with the node's icon and name</li>
+                <li>Click the node to open its config panel on the right</li>
+            </ol>
+
+            <div class="screenshot-placeholder">
+                <strong>📷 Screenshot needed:</strong> Annotated screenshot of the Node Palette (left sidebar) with arrows showing (1) the search/filter at top, (2) the "Inbound Webhook" node under Triggers being highlighted, (3) the canvas drop target. Capture during dry-run.
+            </div>
+
+            <h3>Connecting Nodes</h3>
+            <p>Nodes execute in sequence. You define the sequence by connecting output handles to input handles.</p>
+
+            <svg width="100%" style="max-width: 640px; display: block; margin: 20px auto;" viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg">
+                <!-- Node 1 -->
+                <rect x="50" y="60" width="140" height="80" fill="#3070E7" stroke="#0F1729" stroke-width="2" rx="12"/>
+                <text x="120" y="105" fill="white" font-size="14" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold">Inbound Webhook</text>
+                
+                <!-- Output handle -->
+                <circle cx="190" cy="100" r="8" fill="#22C55E" stroke="#0F1729" stroke-width="2"/>
+                <text x="120" y="165" fill="#0F1729" font-size="11" text-anchor="middle" font-family="Arial, sans-serif">Output handle →</text>
+                
+                <!-- Connection line -->
+                <line x1="198" y1="100" x2="302" y2="100" stroke="#0F1729" stroke-width="3" marker-end="url(#arrowhead2)"/>
+                <text x="250" y="90" fill="#FF9000" font-size="12" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold">Drag to connect</text>
+                <defs>
+                    <marker id="arrowhead2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                        <polygon points="0 0, 10 3, 0 6" fill="#0F1729"/>
+                    </marker>
+                </defs>
+                
+                <!-- Node 2 -->
+                <rect x="310" y="60" width="140" height="80" fill="#16BDEB" stroke="#0F1729" stroke-width="2" rx="12"/>
+                <text x="380" y="105" fill="white" font-size="14" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold">SMS</text>
+                
+                <!-- Input handle -->
+                <circle cx="310" cy="100" r="8" fill="#64748B" stroke="#0F1729" stroke-width="2"/>
+                <text x="380" y="165" fill="#0F1729" font-size="11" text-anchor="middle" font-family="Arial, sans-serif">← Input handle</text>
+            </svg>
+
+            <p style="margin-top: 20px;"><strong>For nodes with multiple outputs (like Branch):</strong></p>
+
+            <svg width="100%" style="max-width: 640px; display: block; margin: 20px auto;" viewBox="0 0 640 280" xmlns="http://www.w3.org/2000/svg">
+                <!-- Branch Node -->
+                <rect x="50" y="100" width="120" height="80" fill="#F59E0B" stroke="#0F1729" stroke-width="2" rx="12"/>
+                <text x="110" y="145" fill="white" font-size="14" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold">Branch</text>
+                
+                <!-- Output handles with labels -->
+                <circle cx="170" cy="115" r="6" fill="#22C55E" stroke="#0F1729" stroke-width="2"/>
+                <text x="185" y="120" fill="#0F1729" font-size="10" font-family="Arial, sans-serif">YES</text>
+                <line x1="176" y1="115" x2="240" y2="50" stroke="#0F1729" stroke-width="2" marker-end="url(#arrowhead3)"/>
+                
+                <circle cx="170" cy="135" r="6" fill="#22C55E" stroke="#0F1729" stroke-width="2"/>
+                <text x="185" y="140" fill="#0F1729" font-size="10" font-family="Arial, sans-serif">1</text>
+                <line x1="176" y1="135" x2="240" y2="110" stroke="#0F1729" stroke-width="2" marker-end="url(#arrowhead3)"/>
+                
+                <circle cx="170" cy="155" r="6" fill="#22C55E" stroke="#0F1729" stroke-width="2"/>
+                <text x="185" y="160" fill="#0F1729" font-size="10" font-family="Arial, sans-serif">2</text>
+                <line x1="176" y1="155" x2="240" y2="170" stroke="#0F1729" stroke-width="2" marker-end="url(#arrowhead3)"/>
+                
+                <circle cx="170" cy="175" r="6" fill="#22C55E" stroke="#0F1729" stroke-width="2"/>
+                <text x="185" y="180" fill="#0F1729" font-size="10" font-family="Arial, sans-serif">Default</text>
+                <line x1="176" y1="175" x2="240" y2="230" stroke="#0F1729" stroke-width="2" marker-end="url(#arrowhead3)"/>
+                
+                <defs>
+                    <marker id="arrowhead3" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                        <polygon points="0 0, 10 3, 0 6" fill="#0F1729"/>
+                    </marker>
+                </defs>
+                
+                <!-- Downstream nodes -->
+                <rect x="250" y="30" width="80" height="40" fill="#16BDEB" stroke="#0F1729" stroke-width="2" rx="8"/>
+                <text x="290" y="54" fill="white" font-size="11" text-anchor="middle" font-family="Arial, sans-serif">SMS</text>
+                
+                <rect x="250" y="90" width="80" height="40" fill="#3070E7" stroke="#0F1729" stroke-width="2" rx="8"/>
+                <text x="290" y="114" fill="white" font-size="11" text-anchor="middle" font-family="Arial, sans-serif">AI Agent</text>
+                
+                <rect x="250" y="150" width="80" height="40" fill="#16BDEB" stroke="#0F1729" stroke-width="2" rx="8"/>
+                <text x="290" y="174" fill="white" font-size="11" text-anchor="middle" font-family="Arial, sans-serif">SMS</text>
+                
+                <rect x="250" y="210" width="80" height="40" fill="#16BDEB" stroke="#0F1729" stroke-width="2" rx="8"/>
+                <text x="290" y="234" fill="white" font-size="11" text-anchor="middle" font-family="Arial, sans-serif">SMS</text>
+                
+                <text x="400" y="140" fill="#64748B" font-size="12" font-family="Arial, sans-serif">Branch nodes have multiple</text>
+                <text x="400" y="160" fill="#64748B" font-size="12" font-family="Arial, sans-serif">output handles — one per</text>
+                <text x="400" y="180" fill="#64748B" font-size="12" font-family="Arial, sans-serif">condition.</text>
+            </svg>
+
+            <h3>Setting Parameters in the Config Panel</h3>
+            <ol>
+                <li>Click any node on the canvas — the config panel opens on the right</li>
+                <li>The panel has tabs/sections (varies by node, but typically: General, Inputs, Outputs, Advanced)</li>
+                <li>Each parameter is a labeled field (text input, dropdown, code editor, etc.)</li>
+                <li><strong>Required parameters are usually marked with a red asterisk (*) or highlighted</strong></li>
+                <li>Click outside the panel or click the X to close — changes save to the node automatically (but you still need to Save the flow)</li>
+            </ol>
+
+            <div class="info-box warning">
+                <strong>⚠ Always Use the Variable Picker</strong><br>
+                Most parameter fields support inserting variables from upstream nodes. Look for a <code>{ }</code> icon, <code>$()</code> icon, or "Insert variable" button next to the field. Clicking it opens a tree of available variables (trigger payload, previous node outputs).<br><br>
+                <strong>Always use the variable picker instead of typing variable syntax by hand.</strong> Exact prefixes (<code>$(node.trigger.x)</code> vs <code>$(trigger.x)</code> vs <code>{{trigger.x}}</code>) vary between Connect versions and getting it wrong is the #1 cause of "why isn't this working" in the lab.
+            </div>
+
+            <div class="screenshot-placeholder">
+                <strong>📷 Screenshot needed:</strong> Annotated screenshot of an SMS Node config panel with arrows pointing to (1) the To/Recipient field, (2) the Message Body field, (3) the variable picker icon, (4) the Save button (if separate from auto-save). Capture during dry-run.
+            </div>
+
+            <h3>Save → Publish → Test (The Flow Lifecycle)</h3>
+            <p>Connect flows have lifecycle states:</p>
+            <ol>
+                <li><strong>Draft / Unsaved</strong> — your current edits, not yet persisted</li>
+                <li><strong>Saved</strong> — persisted to the tenant but the webhook URL is NOT yet live</li>
+                <li><strong>Published / Active</strong> — the webhook URL accepts incoming events; the flow will execute</li>
+                <li><strong>Stopped / Inactive</strong> — published but paused</li>
+            </ol>
+
+            <div class="info-box warning">
+                <strong>Critical:</strong> You must <strong>Publish</strong> (not just Save) before the webhook URL will accept POSTs. This is the #2 cause of "my trigger page returns 404."
+            </div>
+
+            <p>After publishing, look for the <strong>Execution Log</strong> (or "Flow Executions" tab depending on version) — this is where you'll see each invocation, the path taken through branches, and any errors. <strong>This is your #1 debugging tool.</strong></p>
+
+            <div class="screenshot-placeholder">
+                <strong>📷 Screenshot needed:</strong> Annotated screenshot of the flow lifecycle buttons (Save / Publish / Stop) in the top toolbar, with arrows showing the Publish button highlighted. Capture during dry-run.
+            </div>
+
+            <h3>Common Gotchas</h3>
+            <div class="info-box warning">
+                <strong>Watch out for these pitfalls:</strong>
+                <ul>
+                    <li><strong>Forgetting to Publish</strong> after editing — webhook 404s</li>
+                    <li><strong>Auto-save is per-node, not per-flow</strong> — closing the browser without clicking Save loses unsaved canvas-level changes (node positions, deleted connections)</li>
+                    <li><strong>Hand-typing variable syntax</strong> instead of using the picker — silent failure, wrong prefix</li>
+                    <li><strong>Disconnecting a node mid-flow</strong> — Connect doesn't always warn you; the flow runs but skips the disconnected branch</li>
+                    <li><strong>Node names with spaces or special characters</strong> — some Connect versions use the node name as the variable namespace; rename nodes to short alphanumeric names (e.g., "GetReply" not "Get Sarah's Reply!")</li>
+                    <li><strong>UI label drift between Connect versions</strong> — exact button labels (Publish vs Activate, Save vs Apply) vary; trust the icon and tooltip more than the exact word</li>
+                </ul>
+            </div>
+
+            <div class="info-box success">
+                <strong>✓ You're ready!</strong> Now that you understand the Flow Builder, you'll create your first flow in Module 2.
             </div>
         </section>
 
