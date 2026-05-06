@@ -184,6 +184,62 @@
             color: #334155;
             white-space: pre-wrap;
         }
+
+        .explainer {
+            background: white;
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--cisco-blue);
+            border-radius: 8px;
+            padding: 18px 22px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            color: #334155;
+        }
+        .explainer h3 {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--cisco-dark-blue);
+            margin-bottom: 8px;
+        }
+        .explainer p { margin-bottom: 8px; }
+        .explainer p:last-child { margin-bottom: 0; }
+        .explainer .real-world {
+            background: rgba(48,112,231,0.06);
+            padding: 10px 14px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 13px;
+        }
+        .explainer .real-world strong { color: var(--cisco-blue); }
+
+        .why-box {
+            margin-top: 6px;
+            padding: 10px 14px;
+            background: rgba(255,144,0,0.06);
+            border-left: 3px solid var(--cisco-orange);
+            border-radius: 0 6px 6px 0;
+            font-size: 12.5px;
+            color: #475569;
+        }
+        .why-box strong { color: var(--cisco-orange); font-weight: 700; }
+
+        .payload-explainer {
+            margin-top: 14px;
+            font-size: 12.5px;
+            color: #475569;
+            line-height: 1.55;
+        }
+        .payload-explainer ul {
+            margin: 8px 0 0 18px;
+            padding: 0;
+        }
+        .payload-explainer li { margin-bottom: 4px; }
+        .payload-explainer code {
+            background: #EEF2F7;
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 11.5px;
+        }
     </style>
 </head>
 <body>
@@ -200,31 +256,49 @@
             <p>Click <strong>Send Renewal Notice</strong> below to POST a renewal event to your Webex Connect flow's webhook. Your flow will text Sarah's mobile (the number you enter) and walk her through the renewal options you built.</p>
         </div>
 
+        <div class="explainer">
+            <h3>What this page actually does (and why it exists)</h3>
+            <p>In production, a <strong>policy administration system</strong> (or a scheduled job in a CRM) would automatically detect that Sarah's policy is 30 days from renewal and POST a JSON event to your Webex Connect webhook. That POST is what kicks off the SMS conversation.</p>
+            <p>This lab page <strong>simulates that backend system</strong>. You're playing the role of Farmers' policy admin platform — manually firing the same HTTP request a real system would send automatically. This lets you trigger your flow on demand without needing to wait 30 days for a real renewal, and without setting up a backend integration during a 1-hour lab.</p>
+            <div class="real-world">
+                <strong>In production:</strong> Replace this page with a nightly cron job, a Salesforce/Guidewire trigger, or any system that knows policy renewal dates. The webhook URL, payload structure, and authentication stay exactly the same.
+            </div>
+        </div>
+
         <div class="form-card">
             <form id="renewal-form">
                 <div class="form-group">
                     <label for="webhook-url">Your Webex Connect Webhook URL</label>
                     <input type="url" id="webhook-url" placeholder="https://api.us.webexconnect.io/resources/v1/events/inbound-webhook/..." required>
                     <p class="hint">Copy this from the Inbound Webhook node in your flow (after you save the flow).</p>
+                    <div class="why-box">
+                        <strong>Why this matters:</strong> Every Webex Connect flow with an Inbound Webhook trigger gets its own <em>unique</em> URL. That URL is the public entry point — anyone who knows it can start your flow. In this multi-tenant lab, the unique URL is what isolates your flow from the other 9 participants sharing the same Connect tenant. <strong>Treat it like a secret.</strong>
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <label for="phone-number">Sarah's Mobile Number (use your own for testing)</label>
                     <input type="tel" id="phone-number" placeholder="+15551234567" required pattern="^\+[1-9]\d{6,14}$">
                     <p class="hint">Include country code with a leading +. Example: <code>+15551234567</code></p>
+                    <div class="why-box">
+                        <strong>Why this matters:</strong> The phone number is the <em>destination</em> of the SMS your flow will send. In production this would be Sarah's real number, pulled from the policy database and included in the renewal event. For the lab, <strong>use your own mobile</strong> so you can read the texts and reply to them — you're playing both Farmers' system <em>and</em> Sarah. The <code>+countrycode</code> format (E.164) is required by carrier networks worldwide.
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <label for="service-key">Service Key (optional)</label>
                     <input type="text" id="service-key" placeholder="Leave blank if your webhook is set to no auth">
                     <p class="hint">Sent as the <code>key</code> header. Your instructor will share this if needed.</p>
+                    <div class="why-box">
+                        <strong>Why this matters:</strong> Webhooks are publicly reachable on the internet. Without authentication, anyone who guesses your URL could trigger your flow (and rack up SMS costs). The Service Key is a shared secret sent in an HTTP header — Connect rejects any POST that doesn't include the right key. In production you'd <em>always</em> enable this; in the lab it's optional so you can focus on the flow logic first.
+                    </div>
                 </div>
 
                 <button type="submit" class="send-btn" id="send-btn">Send Renewal Notice</button>
             </form>
 
             <div class="payload-preview">
-                <span class="label">Payload (preview)</span>
+                <span class="label">Payload (preview) — this is the JSON your flow will receive</span>
 <pre id="payload-preview">{
   "phone_number": "+15551234567",
   "policy_id": "FRM-101",
@@ -232,6 +306,17 @@
   "vehicle": "2022 Toyota RAV4",
   "renewal_date": "2026-06-04"
 }</pre>
+                <div class="payload-explainer">
+                    Each field becomes a variable inside your flow that downstream nodes (SMS, Branch, AI Agent) can reference:
+                    <ul>
+                        <li><code>phone_number</code> — the destination address for the SMS Node. Without this, Connect doesn't know who to text.</li>
+                        <li><code>policy_id</code> — included in the SMS body so Sarah can identify which policy is renewing (a real customer may have several).</li>
+                        <li><code>policyholder_name</code> — used to personalize the greeting (<em>"Hi Sarah,"</em> instead of <em>"Hi customer,"</em>).</li>
+                        <li><code>vehicle</code> — gives Sarah specific context so she trusts the message is real and not phishing.</li>
+                        <li><code>renewal_date</code> — could be referenced in branch logic (e.g. urgency tier) or surfaced to the AI Agent as policy context.</li>
+                    </ul>
+                    Hard-coding these in the trigger keeps the lab simple. In production, the policy admin system pulls them from the customer record at the moment the event fires.
+                </div>
             </div>
 
             <div class="help-box">
