@@ -1535,7 +1535,6 @@ A copy of your updated policy will arrive by email within 24 hours.</code>
                 '<div class="cred-row">' +
                 '<div class="cred-label">Password</div>' +
                 '<div class="cred-value">' + user.password + '</div>' +
-                '<button class="cred-copy-btn" onclick="copyToClipboard(\'' + user.password + '\', this)">Copy</button>' +
                 '</div>' +
                 '</div>';
             document.getElementById('credentials-display').innerHTML = credHTML;
@@ -1553,9 +1552,6 @@ A copy of your updated policy will arrive by email within 24 hours.</code>
                 '<div class="nav-cred-row">' +
                 '<div class="nav-cred-label">Pass</div>' +
                 '<div class="nav-cred-value">' + user.password + '</div>' +
-                '<button class="nav-cred-copy" onclick="copyToClipboard(\'' + user.password + '\', this)">' +
-                '<svg fill="currentColor" viewBox="0 0 16 16"><path d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2z"/></svg>' +
-                '</button>' +
                 '</div>';
             document.getElementById('nav-credentials').innerHTML = navCredHTML;
 
