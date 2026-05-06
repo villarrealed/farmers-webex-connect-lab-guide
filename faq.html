@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ — Webex Connect Lab</title>
+    <style>
+        :root {
+            --primary: #3070E7;
+            --primary-light: #EBF2FF;
+            --text: #0F1729;
+            --text-muted: #64748B;
+            --bg: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --border: #E2E8F0;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding: 40px 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        header { margin-bottom: 40px; }
+        header h1 { font-size: 28px; font-weight: 600; margin-bottom: 8px; }
+        header p { color: var(--text-muted); font-size: 16px; }
+        header a { color: var(--primary); text-decoration: none; font-weight: 500; }
+        header a:hover { text-decoration: underline; }
+        .toc { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 24px 32px; margin-bottom: 40px; }
+        .toc h2 { font-size: 16px; font-weight: 600; margin-bottom: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .toc ul { list-style: none; columns: 2; column-gap: 32px; }
+        .toc li { margin-bottom: 8px; }
+        .toc a { color: var(--primary); text-decoration: none; font-size: 14px; }
+        .toc a:hover { text-decoration: underline; }
+        .faq-section { margin-bottom: 48px; }
+        .faq-section h2 { font-size: 20px; font-weight: 600; margin-bottom: 20px; padding-bottom: 8px; border-bottom: 2px solid var(--primary); display: inline-block; }
+        .faq-item { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 16px; overflow: hidden; }
+        .faq-question { padding: 18px 24px; cursor: pointer; font-weight: 600; font-size: 15px; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+        .faq-question:hover { background: var(--primary-light); }
+        .faq-question::after { content: '+'; font-size: 20px; font-weight: 300; color: var(--primary); transition: transform 0.2s; }
+        .faq-item.open .faq-question::after { content: '−'; }
+        .faq-answer { padding: 0 24px 18px; display: none; font-size: 14px; color: #374151; }
+        .faq-item.open .faq-answer { display: block; }
+        .faq-answer p { margin-bottom: 12px; }
+        .faq-answer ul, .faq-answer ol { margin: 8px 0 12px 20px; }
+        .faq-answer li { margin-bottom: 6px; }
+        .faq-answer code { background: #F1F5F9; padding: 2px 6px; border-radius: 4px; font-size: 13px; color: #1E293B; }
+        .faq-answer strong { color: var(--text); }
+        .tip { background: #F0FDF4; border-left: 4px solid var(--success); padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 12px 0; font-size: 13px; }
+        .warning { background: #FFFBEB; border-left: 4px solid var(--warning); padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 12px 0; font-size: 13px; }
+        .resource-link { background: var(--primary-light); padding: 16px 20px; border-radius: 8px; margin-top: 40px; font-size: 14px; }
+        .resource-link a { color: var(--primary); font-weight: 600; }
+        @media (max-width: 600px) {
+            .toc ul { columns: 1; }
+            body { padding: 20px 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Frequently Asked Questions</h1>
+            <p>Common questions, troubleshooting, and reference for the Webex Connect lab</p>
+            <p style="margin-top: 12px;"><a href="index.html">← Back to Lab Home</a> · <a href="participant-guide.html">Participant Guide</a></p>
+        </header>
+
+        <nav class="toc">
+            <h2>Sections</h2>
+            <ul>
+                <li><a href="#getting-started">Getting Started & Login</a></li>
+                <li><a href="#lab-accounts">Lab Accounts & Seat Numbers</a></li>
+                <li><a href="#flow-builder">Flow Builder Basics</a></li>
+                <li><a href="#webhook-trigger">Webhook Trigger</a></li>
+                <li><a href="#sms">SMS Send & Receive</a></li>
+                <li><a href="#branching">Branching & Logic</a></li>
+                <li><a href="#ai-agent">AI Agent Handoff</a></li>
+                <li><a href="#testing">End-to-End Testing</a></li>
+                <li><a href="#troubleshooting">Troubleshooting</a></li>
+                <li><a href="#tenant">Tenant, Sandbox & SMS Senders</a></li>
+                <li><a href="#general">General Concepts</a></li>
+            </ul>
+        </nav>
+
+        <!-- GETTING STARTED -->
+        <div id="getting-started" class="faq-section">
+            <h2>Getting Started & Login</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">How do I log in to Webex Connect?</div>
+                <div class="faq-answer">
+                    <p>Navigate to your assigned Webex Connect tenant URL (provided by your instructor or shown in the Participant Guide credential bar) and sign in with your seat-specific lab credentials.</p>
+                    <div class="tip"><strong>Tip:</strong> Use an incognito/private browser window to avoid conflicts with any other Webex Connect tenant you may already be logged into.</div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Do I need anything from Lab 1 before I start?</div>
+                <div class="faq-answer">
+                    <p>Yes. This lab assumes the <strong>Webex AI Agent from Lab 1</strong> ("Farmers Agent") is already published and reachable. Your instructor will pre-build a renewal-focused AI Agent that all participants reference from their Connect flow — you don't need to build a new agent for Lab 2.</p>
+                    <p>If you skipped Lab 1, you can still complete most of this lab — only the "AI Agent handoff" branch (Module 5) requires the pre-built agent.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Which browser should I use?</div>
+                <div class="faq-answer">
+                    <p>Google Chrome or Microsoft Edge (Chromium-based) are recommended. The Webex Connect flow builder is drag-and-drop heavy and works most reliably in those browsers. Safari and Firefox usually work but have occasional UI quirks. Ensure your browser is up to date.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Can I use my personal Webex account for this lab?</div>
+                <div class="faq-answer">
+                    <p>No. The lab tenant is pre-configured with the SMS sender, channel assets, and AI Agent integration needed for the lab. Use only the lab credentials assigned to your seat.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- LAB ACCOUNTS & SEAT NUMBERS -->
+        <div id="lab-accounts" class="faq-section">
+            <h2>Lab Accounts & Seat Numbers</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">Why do I need a seat number?</div>
+                <div class="faq-answer">
+                    <p>All 10 lab participants share the <strong>same Webex Connect tenant</strong>. Your seat number (1–10) keeps everyone's work separate. It determines:</p>
+                    <ul>
+                        <li><strong>Your login credentials</strong> — Each seat has a unique username</li>
+                        <li><strong>Your flow name</strong> — <code>Renewal Flow N</code> for Seat N</li>
+                        <li><strong>Your webhook URL</strong> — auto-generated when you save the flow's Inbound Webhook node, unique per flow</li>
+                    </ul>
+                    <div class="warning"><strong>Critical:</strong> Always name your flow with your seat number. If you use a generic name, another participant may accidentally edit your flow.</div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">What are the naming conventions for my seat?</div>
+                <div class="faq-answer">
+                    <p>Replace <strong>N</strong> with your seat number (1–10):</p>
+                    <table style="width:100%; border-collapse:collapse; margin: 12px 0;">
+                        <thead><tr style="border-bottom:2px solid #E2E8F0;"><th style="text-align:left; padding:8px;">Resource</th><th style="text-align:left; padding:8px;">Naming Convention</th><th style="text-align:left; padding:8px;">Example (Seat 5)</th></tr></thead>
+                        <tbody>
+                            <tr style="border-bottom:1px solid #E2E8F0;"><td style="padding:8px;">Flow name</td><td style="padding:8px;"><code>Renewal Flow N</code></td><td style="padding:8px;"><code>Renewal Flow 5</code></td></tr>
+                            <tr style="border-bottom:1px solid #E2E8F0;"><td style="padding:8px;">Service name (if creating one)</td><td style="padding:8px;"><code>Farmers Lab N</code></td><td style="padding:8px;"><code>Farmers Lab 5</code></td></tr>
+                            <tr><td style="padding:8px;">Test phone number</td><td style="padding:8px;">Your own mobile number</td><td style="padding:8px;">+1-555-XXX-XXXX</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">I forgot my seat number. How do I find it?</div>
+                <div class="faq-answer">
+                    <p>Check the credential bar at the bottom of the Participant Guide page (it shows your seat number once you've selected it from the home page). If you've cleared your browser storage, return to the <a href="index.html">lab home page</a> and re-select your seat.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- FLOW BUILDER BASICS -->
+        <div id="flow-builder" class="faq-section">
+            <h2>Flow Builder Basics</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">What is a "flow" in Webex Connect?</div>
+                <div class="faq-answer">
+                    <p>A <strong>flow</strong> is a visual diagram that orchestrates a customer interaction. You drag nodes (SMS, Receive, Branch, Delay, etc.) onto a canvas, wire them together with connectors, and Connect executes them in order when the flow is triggered.</p>
+                    <p>For this lab, your flow will: receive a webhook → send an SMS → wait for the customer's reply → branch on what they replied → take a different action per branch.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Where do I find the flow builder?</div>
+                <div class="faq-answer">
+                    <p>In Webex Connect, navigate to the left sidebar and select <strong>Service Designer</strong> (or <strong>Flow Designer</strong>, depending on tenant version). Choose your assigned service, then click <strong>+ Create Flow</strong>.</p>
+                    <div class="tip"><strong>Note:</strong> Exact menu labels may vary slightly by tenant version. Your instructor will confirm the path during Module 1.</div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">How do I connect two nodes?</div>
+                <div class="faq-answer">
+                    <p>Each node has small <strong>connection points</strong> (usually labeled <code>onSuccess</code>, <code>onTimeout</code>, or branch labels). Click and drag from a connection point on one node to the input of another node to wire them together.</p>
+                    <p>To delete a connector, click it and press Delete (or right-click and choose Remove).</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">How do I save my work?</div>
+                <div class="faq-answer">
+                    <p>Use the <strong>Save</strong> button in the top-right of the flow canvas. Save frequently — Connect does not auto-save. To make your flow callable, you also need to <strong>Publish</strong> it (Save creates a draft; Publish makes the active version live).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- WEBHOOK TRIGGER -->
+        <div id="webhook-trigger" class="faq-section">
+            <h2>Webhook Trigger</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">What is the Inbound Webhook node?</div>
+                <div class="faq-answer">
+                    <p>The <strong>Inbound Webhook</strong> node is the entry point for your flow. When an external system POSTs JSON to this node's URL, the flow starts executing. For this lab, the static "renewal trigger" web page POSTs to your webhook with a phone number; your flow then sends Sarah an SMS.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Where do I find my unique webhook URL?</div>
+                <div class="faq-answer">
+                    <p>After you place an Inbound Webhook node and save the flow, click the node and look at its properties panel. You'll see a URL that looks like:</p>
+                    <p><code>https://api.us.webexconnect.io/resources/v1/events/inbound-webhook/&lt;long-random-id&gt;</code></p>
+                    <p>The region segment (<code>us</code>, <code>eu</code>, etc.) depends on where your tenant is hosted. Copy the entire URL and paste it into the static renewal-trigger web page.</p>
+                    <div class="warning"><strong>Important:</strong> Each flow has its OWN unique webhook URL. If you create a new flow, you'll get a different URL. Don't share webhook URLs across flows.</div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">What authentication does the webhook need?</div>
+                <div class="faq-answer">
+                    <p>For this lab, use the simplest option that the tenant allows — typically <strong>Service Key</strong> (a header named <code>key</code> with a shared value). Your instructor will share the service key value if needed.</p>
+                    <p>Production deployments should use JWT or HMAC signatures, but those add complexity beyond the scope of a 1-hour lab.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">How do I reference the phone number that came in the POST body?</div>
+                <div class="faq-answer">
+                    <p>Webex Connect uses dot-notation variables. If the POST body is:</p>
+                    <p><code>{ "phone_number": "+15551234567" }</code></p>
+                    <p>You can reference the phone number anywhere downstream as:</p>
+                    <p><code>$(node.trigger.phone_number)</code> — or <code>$(n1.inbound.phone_number)</code> if your trigger node ID is <code>n1</code>.</p>
+                    <div class="tip"><strong>Tip:</strong> The exact prefix (<code>node.trigger</code> vs <code>nX.inbound</code>) varies by Connect version. The flow builder usually has a variable picker — use it to insert the right syntax automatically.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SMS -->
+        <div id="sms" class="faq-section">
+            <h2>SMS Send & Receive</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">How do I send an SMS?</div>
+                <div class="faq-answer">
+                    <p>Drag an <strong>SMS node</strong> onto the canvas. Configure:</p>
+                    <ul>
+                        <li><strong>Destination:</strong> the phone number to send to (use your variable, e.g. <code>$(node.trigger.phone_number)</code>)</li>
+                        <li><strong>From Number:</strong> the pre-provisioned SMS sender for the lab tenant (your instructor will share this)</li>
+                        <li><strong>Message:</strong> the text you want to send (up to 1024 characters)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">How do I wait for the customer's reply?</div>
+                <div class="faq-answer">
+                    <p>Use the <strong>Receive node</strong> immediately after your SMS node. Configure:</p>
+                    <ul>
+                        <li><strong>Channel:</strong> SMS</li>
+                        <li><strong>Max Timeout:</strong> 300 seconds (5 minutes) is a good default for the lab</li>
+                    </ul>
+                    <p>The Receive node automatically correlates the inbound reply to the same flow instance using the customer's phone number. You don't need to manage session IDs manually.</p>
+                    <p>The reply text is captured in a variable like <code>$(nX.receive.message)</code> where <code>nX</code> is the Receive node's ID.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">What happens if the customer doesn't reply?</div>
+                <div class="faq-answer">
+                    <p>The Receive node has an <code>onTimeout</code> output. Wire that to a fallback action — for this lab, a final SMS like <em>"We didn't hear back. We'll try again later."</em> is a fine default.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">My SMS isn't arriving on my phone. Why?</div>
+                <div class="faq-answer">
+                    <p>Check, in this order:</p>
+                    <ol>
+                        <li><strong>Phone number format:</strong> must include country code (e.g. <code>+15551234567</code>, not <code>5551234567</code>)</li>
+                        <li><strong>Country support:</strong> the lab tenant's SMS sender may only send to specific countries. Confirm your number's country is supported.</li>
+                        <li><strong>From Number:</strong> make sure the SMS node has a valid From Number selected (not blank)</li>
+                        <li><strong>Flow status:</strong> the flow must be <strong>Published</strong>, not just Saved</li>
+                        <li><strong>Webhook 200 OK:</strong> the static trigger page should show a 200 response — if it shows 401 or 404, the webhook URL or auth header is wrong</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- BRANCHING -->
+        <div id="branching" class="faq-section">
+            <h2>Branching & Logic</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">How do I branch on the customer's reply?</div>
+                <div class="faq-answer">
+                    <p>Drag a <strong>Branch node</strong> after your Receive node. For each branch, set a condition like:</p>
+                    <ul>
+                        <li><code>$(nX.receive.message)</code> <strong>Equals (ignore case)</strong> <code>YES</code></li>
+                        <li><code>$(nX.receive.message)</code> <strong>Equals</strong> <code>1</code></li>
+                        <li><code>$(nX.receive.message)</code> <strong>Equals</strong> <code>2</code></li>
+                    </ul>
+                    <p>The Branch node evaluates conditions top-to-bottom; the first match wins. Always include a <strong>Default</strong> branch for replies that don't match any of your conditions (e.g. <em>"Sorry, didn't understand."</em>).</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Should I use "Equals" or "Contains" for matching?</div>
+                <div class="faq-answer">
+                    <p>For this lab, <strong>Equals (ignore case)</strong> is the safest choice — it matches exactly "yes", "YES", "Yes" but rejects "yes please" or "yep". If you want more flexibility, use <strong>Contains</strong>, but be aware: a reply of "no thanks" would match a "Contains 'thanks'" branch.</p>
+                    <div class="tip"><strong>Production note:</strong> real systems use NLU / intent matching (e.g. via the AI Agent) instead of strict keyword rules. Strict matching keeps the lab simple to demo.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI AGENT -->
+        <div id="ai-agent" class="faq-section">
+            <h2>AI Agent Handoff</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">How does the AI Agent handoff work in this lab?</div>
+                <div class="faq-answer">
+                    <p>When Sarah replies <code>1</code> (virtual agent), your flow uses the Webex Connect <strong>AI Agent node</strong> to hand the conversation off to a pre-built Webex AI Agent. The AI Agent then takes over the SMS conversation, answers Sarah's renewal questions, and either completes the renewal or routes back to a human.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Do I need to build the AI Agent myself?</div>
+                <div class="faq-answer">
+                    <p>No. Your instructor has pre-built a renewal-focused AI Agent (named something like <code>farmers-renewal-agent</code>) in the same tenant. Your flow just needs to reference it by name in the AI Agent node configuration.</p>
+                    <div class="warning"><strong>If you completed Lab 1:</strong> the agent you built there is a different agent (general policy servicing). The renewal agent is separate. Use the renewal agent for Lab 2.</div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">What should I do if the AI Agent node isn't working?</div>
+                <div class="faq-answer">
+                    <p>First, confirm with your instructor that the AI Agent is published and the node configuration matches the tenant. Common issues:</p>
+                    <ul>
+                        <li>Wrong agent name selected in the node properties</li>
+                        <li>The pre-built agent isn't in the "Published" state</li>
+                        <li>Channel mismatch (the agent must be configured for SMS, not just web chat)</li>
+                    </ul>
+                    <div class="tip"><strong>Fallback:</strong> if the AI Agent branch isn't working, you can still complete the lab by sending a cosmetic SMS like <em>"A virtual agent will reach out shortly"</em> on that branch. You'll lose the live demo but the flow logic is identical.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TESTING -->
+        <div id="testing" class="faq-section">
+            <h2>End-to-End Testing</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">How do I test my flow end-to-end?</div>
+                <div class="faq-answer">
+                    <ol>
+                        <li><strong>Save and Publish</strong> your flow</li>
+                        <li>Copy your <strong>Inbound Webhook URL</strong> from the trigger node</li>
+                        <li>Open the <a href="#" id="trigger-page-link">renewal-trigger web page</a> (URL provided by your instructor)</li>
+                        <li>Paste your webhook URL into the form</li>
+                        <li>Enter your own mobile number</li>
+                        <li>Click <strong>Send Renewal Notice</strong></li>
+                        <li>Watch your phone — you should receive an SMS within ~5 seconds</li>
+                        <li>Reply <code>YES</code>, <code>1</code>, or <code>2</code> and observe the next SMS</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">How do I see what my flow actually did?</div>
+                <div class="faq-answer">
+                    <p>In Webex Connect, navigate to <strong>Logs</strong> or <strong>Flow Executions</strong> (label varies by tenant). Find your flow's most recent execution. You can see each node that ran, the variables that were captured, and any errors that occurred.</p>
+                    <p>This is the single most useful tool for debugging. Use it whenever something doesn't behave the way you expect.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Can I test without using my real phone number?</div>
+                <div class="faq-answer">
+                    <p>Technically yes — you can put any registered test number — but the experience of seeing a real SMS arrive on your own phone is the most memorable part of the lab. We strongly recommend using your real number.</p>
+                    <p>Your number is used only for the duration of the lab and is not stored anywhere persistent.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TROUBLESHOOTING -->
+        <div id="troubleshooting" class="faq-section">
+            <h2>Troubleshooting</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">The static page shows "401 Unauthorized" when I click Send.</div>
+                <div class="faq-answer">
+                    <p>The webhook URL is correct but the auth header is missing or wrong. Check:</p>
+                    <ul>
+                        <li>The static page form includes a "Service Key" field — make sure you pasted the value your instructor provided</li>
+                        <li>The Inbound Webhook node in your flow has Service Key auth enabled (not "None" — but not JWT either, unless you configured a JWT)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">The static page shows "404 Not Found".</div>
+                <div class="faq-answer">
+                    <p>The webhook URL is wrong, or the flow isn't published. Re-copy the URL from the trigger node and verify the flow is in the <strong>Published</strong> state, not Draft.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">I got the first SMS, but my reply didn't trigger anything.</div>
+                <div class="faq-answer">
+                    <p>Several possible causes:</p>
+                    <ul>
+                        <li><strong>Receive node missing or misconfigured:</strong> check that there's a Receive node directly after the SMS node, set to channel SMS</li>
+                        <li><strong>Branch conditions don't match:</strong> if you replied "yes" but your branch uses "Equals YES" (case sensitive), it won't match. Switch to "Equals (ignore case)"</li>
+                        <li><strong>Reply timed out:</strong> the Max Timeout was too short and the flow already exited via <code>onTimeout</code> before your reply arrived. Bump it to 300 seconds.</li>
+                        <li><strong>Default branch missing:</strong> if your reply doesn't match any condition and there's no Default branch, the flow may silently end</li>
+                    </ul>
+                    <p>Check the flow execution log to see exactly which node fired and what value the Receive node captured.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Two SMS arrive instead of one.</div>
+                <div class="faq-answer">
+                    <p>You probably have two SMS nodes wired in series, or you wired both branch outputs to the same SMS node. Check your flow diagram — each path should have exactly the SMS sends you intend.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">The flow runs but no execution log appears.</div>
+                <div class="faq-answer">
+                    <p>Logs may be delayed by 30–60 seconds in some tenants. Wait, then refresh. If still nothing, the webhook POST may not have actually reached the flow — check the static page's response code and the network tab in your browser's dev tools.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TENANT -->
+        <div id="tenant" class="faq-section">
+            <h2>Tenant, Sandbox & SMS Senders</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">Are we using the production Webex Connect or the sandbox?</div>
+                <div class="faq-answer">
+                    <p>This lab uses a dedicated <strong>Webex Connect tenant</strong> provisioned for the Farmers account team. It is not the public sandbox (<code>sandbox.us.webexconnect.io</code>), and not a customer production tenant.</p>
+                    <p>The tenant has the SMS sender, AI Agent, and channel assets pre-configured for the lab.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">What SMS sender (From Number) does the lab use?</div>
+                <div class="faq-answer">
+                    <p>A long code or short code is pre-provisioned in the lab tenant. It will appear in the SMS node's "From Number" dropdown — your instructor will confirm which one to select.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Can I send SMS to any country?</div>
+                <div class="faq-answer">
+                    <p>No. The lab tenant's SMS sender supports a defined list of countries (typically US/Canada and a few others). If your phone number is outside the supported list, you won't receive the test SMS. Your instructor can confirm the supported countries before the lab starts.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">After the lab, can I keep using this Connect tenant?</div>
+                <div class="faq-answer">
+                    <p>The lab tenant is shared and may be reset between sessions. For your own experimentation, sign up for a free <strong>Webex Connect Sandbox</strong> at <a href="https://sandbox.us.webexconnect.io/self-sign-up" target="_blank" rel="noopener noreferrer">sandbox.us.webexconnect.io</a>. The sandbox includes most of the same nodes (with a 10K-message lifetime quota) and is free.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- GENERAL -->
+        <div id="general" class="faq-section">
+            <h2>General Concepts</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">What's the difference between Webex Connect and Webex AI Agent Studio?</div>
+                <div class="faq-answer">
+                    <p><strong>Webex AI Agent Studio</strong> (Lab 1) is where you build the conversational AI itself — knowledge base, intents, prompt behavior, response style.</p>
+                    <p><strong>Webex Connect</strong> (Lab 2) is the orchestration layer — it sends and receives messages across channels (SMS, WhatsApp, email, voice), routes them through business logic, and can hand conversations off to an AI Agent or a human agent.</p>
+                    <p>Said another way: AI Agent Studio is the "brain"; Connect is the "nervous system" that delivers messages to and from the brain.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Is this proactive outreach or reactive?</div>
+                <div class="faq-answer">
+                    <p><strong>Proactive.</strong> Lab 1 was reactive — Sarah initiates the chat by visiting a web page or calling in. Lab 2 is proactive — Farmers initiates by sending Sarah an unsolicited (but expected) renewal reminder. This is one of Connect's key differentiators: it can drive outbound, scheduled, or event-triggered conversations across channels.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">What other channels could this flow use besides SMS?</div>
+                <div class="faq-answer">
+                    <p>The same flow logic could run over WhatsApp, Apple Messages for Business, Facebook Messenger, RCS, email, or voice. You'd swap the SMS node for the corresponding channel node, and Connect handles the rest. A common production pattern is "channel preference" — try SMS first, fall back to email if no reply in N hours.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Could I add a real human agent handoff?</div>
+                <div class="faq-answer">
+                    <p>Yes. Webex Connect integrates with <strong>Webex Contact Center</strong>. The "human agent" branch in this lab is cosmetic (just sends a confirmation SMS), but in production you'd add a Contact Center node that creates a task and routes it to an available agent. Showing the handoff requires having Contact Center configured, which is outside the scope of a 1-hour lab.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="resource-link">
+            <p><strong>Official documentation:</strong> <a href="https://help.webexconnect.io/" target="_blank" rel="noopener noreferrer">help.webexconnect.io</a> · <a href="https://developers.webexconnect.io/" target="_blank" rel="noopener noreferrer">developers.webexconnect.io</a></p>
+            <p style="margin-top: 8px;"><strong>Need more help?</strong> Ask your instructor, or check the <a href="participant-guide.html">Participant Guide</a> for step-by-step instructions.</p>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.faq-item').forEach(function(item) {
+            var q = item.querySelector('.faq-question');
+            q.addEventListener('click', function() {
+                item.classList.toggle('open');
+            });
+        });
+    </script>
+</body>
+</html>

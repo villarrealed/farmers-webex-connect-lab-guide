@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmers Insurance - Webex Connect Lab | Instructor Guide</title>
+    <style>
+        :root {
+            --cisco-blue: #3070E7;
+            --cisco-dark-blue: #0F1729;
+            --cisco-navy: #07182D;
+            --cisco-green: #22C55E;
+            --cisco-yellow: #F59E0B;
+            --cisco-orange: #FF9000;
+            --cisco-red: #EF4444;
+            --cisco-teal: #16BDEB;
+            --cisco-gray: #64748B;
+            --cisco-light-gray: #F8FAFC;
+            --cisco-secondary: #94A3B8;
+            --nav-width: 280px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: var(--cisco-light-gray); color: var(--cisco-dark-blue); line-height: 1.6; }
+
+        .nav-sidebar { position: fixed; top: 0; left: 0; width: var(--nav-width); height: 100vh; background: linear-gradient(180deg, var(--cisco-dark-blue), var(--cisco-navy)); overflow-y: auto; z-index: 100; padding-bottom: 40px; }
+        .nav-logo { padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .nav-logo h2 { color: white; font-size: 14px; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px; }
+        .nav-logo .subtitle { color: var(--cisco-secondary); font-size: 13px; display: block; margin-bottom: 8px; }
+        .nav-logo .badge { display: inline-block; background: var(--cisco-orange); color: white; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px; text-transform: uppercase; }
+        .nav-section { padding: 16px 0; }
+        .nav-section-title { color: var(--cisco-secondary); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; padding: 0 20px; margin-bottom: 8px; }
+        .nav-item { display: block; color: rgba(255,255,255,0.7); text-decoration: none; padding: 8px 20px; font-size: 13px; border-left: 3px solid transparent; transition: all 0.2s; }
+        .nav-item:hover, .nav-item.active { color: white; background: rgba(255,255,255,0.05); border-left-color: var(--cisco-blue); }
+
+        .main-content { margin-left: var(--nav-width); padding: 40px; max-width: 1100px; }
+        .page-header { margin-bottom: 40px; padding-bottom: 24px; border-bottom: 2px solid var(--cisco-orange); }
+        .page-header h1 { font-size: 32px; font-weight: 300; margin-bottom: 8px; }
+        .page-header h2 { font-size: 18px; font-weight: 400; color: var(--cisco-gray); }
+        .page-header .meta { margin-top: 12px; font-size: 14px; color: var(--cisco-secondary); }
+
+        section { scroll-margin-top: 80px; margin-bottom: 48px; }
+        h2 { font-size: 24px; font-weight: 400; margin-bottom: 16px; color: var(--cisco-dark-blue); }
+        h3 { font-size: 20px; font-weight: 500; margin-bottom: 12px; margin-top: 32px; }
+        p { margin-bottom: 12px; color: #334155; }
+        ul, ol { margin-bottom: 16px; padding-left: 24px; }
+        li { margin-bottom: 6px; color: #334155; }
+
+        .info-box { border-left: 4px solid var(--cisco-blue); background: rgba(48,112,231,0.06); padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .info-box.success { border-left-color: var(--cisco-green); background: rgba(34,197,94,0.06); }
+        .info-box.warning { border-left-color: var(--cisco-orange); background: rgba(255,144,0,0.06); }
+
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+        th { background: var(--cisco-dark-blue); color: white; padding: 10px 14px; text-align: left; font-size: 13px; }
+        td { padding: 10px 14px; border-bottom: 1px solid #e2e8f0; font-size: 14px; }
+        tr:hover { background: rgba(48,112,231,0.03); }
+
+        .module-header { background: white; border: 1px solid #e2e8f0; border-left: 4px solid var(--cisco-blue); border-radius: 0 8px 8px 0; padding: 20px 24px; margin-bottom: 24px; }
+        .module-header h2 { margin-bottom: 4px; }
+        .module-header .time { font-size: 14px; color: var(--cisco-blue); font-weight: 500; }
+        .module-header p { margin-top: 8px; font-size: 14px; }
+
+        .instructor-note { border-left: 4px solid var(--cisco-orange); background: rgba(255,144,0,0.08); padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .instructor-note::before { content: "🎓 INSTRUCTOR NOTE"; display: block; font-weight: 700; font-size: 11px; letter-spacing: 1px; color: var(--cisco-orange); margin-bottom: 8px; }
+
+        .timing-badge { display: inline-block; background: var(--cisco-teal); color: white; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 12px; margin-left: 8px; vertical-align: middle; }
+
+        .talking-point { background: rgba(22,189,235,0.06); border-left: 4px solid var(--cisco-teal); padding: 12px 16px; border-radius: 0 6px 6px 0; margin: 12px 0; font-style: italic; }
+
+        .checklist { list-style: none; padding-left: 0; }
+        .checklist li { padding: 8px 0 8px 28px; position: relative; }
+        .checklist li::before { content: "☐"; position: absolute; left: 0; font-size: 16px; }
+
+        .troubleshooting-item { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px 20px; margin: 12px 0; }
+        .troubleshooting-item .problem { font-weight: 600; color: var(--cisco-red); margin-bottom: 4px; }
+        .troubleshooting-item .solution { color: #334155; }
+
+        .red-flag { border-left: 4px solid var(--cisco-red); background: rgba(239,68,68,0.06); padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+        .red-flag::before { content: "⚠ UNVERIFIED — VALIDATE BEFORE DELIVERY"; display: block; font-weight: 700; font-size: 11px; letter-spacing: 1px; color: var(--cisco-red); margin-bottom: 8px; }
+
+        @media (max-width: 900px) {
+            .nav-sidebar { display: none; }
+            .main-content { margin-left: 0; padding: 20px; }
+        }
+        @media print { .nav-sidebar { display: none; } .main-content { margin-left: 0; } }
+    </style>
+</head>
+<body>
+    <nav class="nav-sidebar">
+        <div class="nav-logo">
+            <h2>Farmers Insurance</h2>
+            <span class="subtitle">Webex Connect Lab</span>
+            <span class="badge">Instructor</span>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Pre-Lab Setup</div>
+            <a href="#tenant-setup" class="nav-item">Tenant & Account Setup</a>
+            <a href="#sms-sender" class="nav-item">SMS Sender & Country Support</a>
+            <a href="#renewal-trigger-page" class="nav-item">Static Trigger Page</a>
+            <a href="#prebuilt-ai-agent" class="nav-item">Pre-Built AI Agent</a>
+            <a href="#dry-run" class="nav-item">Dry-Run Validation</a>
+            <a href="#setup-checklist" class="nav-item">Final Setup Checklist</a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Lab Delivery</div>
+            <a href="#module-0" class="nav-item">Module 0: Welcome</a>
+            <a href="#module-1" class="nav-item">Module 1: Tour the Pieces</a>
+            <a href="#module-2" class="nav-item">Module 2: Webhook Trigger</a>
+            <a href="#module-3" class="nav-item">Module 3: Renewal SMS</a>
+            <a href="#module-4" class="nav-item">Module 4: Reply Branching</a>
+            <a href="#module-5" class="nav-item">Module 5: Per-Branch Actions</a>
+            <a href="#module-6" class="nav-item">Module 6: End-to-End Test</a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Reference</div>
+            <a href="#troubleshooting" class="nav-item">Troubleshooting</a>
+            <a href="#common-questions" class="nav-item">Common Questions</a>
+            <a href="#lab-reset" class="nav-item">Lab Reset Procedure</a>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="page-header">
+            <h1>Webex Connect Lab</h1>
+            <h2>Instructor Guide — Farmers Insurance Renewal Outreach</h2>
+            <div class="meta">Estimated delivery time: 60 minutes | Audience: same as Lab 1 (technical &amp; business leads)</div>
+        </div>
+
+        <div class="instructor-note">
+            <p><strong>This is Lab 2 in a 2-lab series.</strong> Lab 1 (Webex AI Agent Studio) builds the conversational brain. Lab 2 (this one) builds the orchestration that delivers proactive SMS, branches on customer reply, and hands off to the AI Agent.</p>
+            <p>The strongest narrative is to deliver them back-to-back: Lab 1 in the morning, Lab 2 in the afternoon. Together they tell the full "build → deploy" story.</p>
+        </div>
+
+        <div class="red-flag">
+            <p><strong>One unverified assumption underpins this lab:</strong> the Webex Connect AI Agent node supports SMS as the channel (not just Live Chat). Public documentation as of design time states the AI Agent node is web-chat-only. The lab design relies on you having confirmed in your tenant that the SMS channel is supported. <strong>Do this validation in the dry-run before you deliver.</strong></p>
+            <p>If the AI Agent SMS node turns out to be unavailable, the participant guide includes a documented fallback: replace the AI Agent branch with a cosmetic SMS like "A virtual agent will reach out shortly." The flow logic is identical; only the demo magic is reduced.</p>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- PRE-LAB SETUP -->
+        <!-- ============================================================ -->
+
+        <section id="tenant-setup">
+            <h2>Tenant &amp; Account Setup</h2>
+            <p>The lab uses a dedicated Webex Connect tenant provisioned for the Farmers account team. All 10 participants log into the same tenant with seat-numbered accounts (<code>labuser01</code>–<code>labuser10</code>) and build their own flows side-by-side.</p>
+
+            <h3>Per-Seat Accounts</h3>
+            <p>Provision 10 user accounts in the tenant. The username/password values must match what's in <code>index.html</code>'s <code>labUsers</code> array. Update both in lockstep.</p>
+            <ul class="checklist">
+                <li>10 user accounts created in the tenant</li>
+                <li>All accounts assigned to the same service / workspace where flows will live</li>
+                <li>All accounts have permission to create + publish flows, view logs, and use the SMS sender</li>
+                <li>Credentials match the <code>labUsers</code> array in <code>index.html</code></li>
+            </ul>
+
+            <div class="instructor-note">
+                <p>If your tenant doesn't support 10 separate users, you can fall back to <strong>1 shared login + 10 named flows</strong> (e.g. <code>Renewal Flow 1</code>, <code>Renewal Flow 2</code>...). The tradeoff: participants can see and accidentally edit each other's flows. Watch for this during delivery.</p>
+            </div>
+        </section>
+
+        <section id="sms-sender">
+            <h2>SMS Sender &amp; Country Support</h2>
+            <p>Confirm before the lab:</p>
+            <ul class="checklist">
+                <li>The tenant has a long code or short code provisioned that all participants can select as "From Number"</li>
+                <li>The sender supports SMS to the country code(s) all participants will use (typically US/Canada)</li>
+                <li>The sender supports two-way SMS (inbound replies) — not just outbound</li>
+                <li>You've sent a test SMS to your own phone and received it within 5 seconds</li>
+                <li>You've replied to the test SMS and confirmed the inbound was received in the flow's execution log</li>
+            </ul>
+
+            <div class="info-box warning">
+                <p><strong>If any participant has a non-US phone number,</strong> verify their country is supported by the sender BEFORE the lab starts. Discovering at minute 50 that 3 participants can't receive SMS will derail the demo. Prepare a fallback (e.g. they pair with a participant whose number works, or use a pool number).</p>
+            </div>
+        </section>
+
+        <section id="renewal-trigger-page">
+            <h2>Static Trigger Page</h2>
+            <p>The static "renewal-trigger" web page is the participant's manual trigger for the flow. They paste their webhook URL + their phone number into a form, click a button, and the page POSTs the renewal event to their Connect flow.</p>
+            <p>The page is bundled in the lab guide repo and deployed to the same Render static site. URL: <code>https://farmers-webex-connect-lab-guide.onrender.com/renewal-trigger.html</code> (or simply <code>renewal-trigger.html</code> as a relative link from any lab guide page).</p>
+            <ul class="checklist">
+                <li>Static page is deployed and reachable</li>
+                <li>Page form fields: webhook URL, mobile number, (optional) Service Key header value</li>
+                <li>Page POSTs JSON: <code>{ "phone_number": "...", "policy_id": "FRM-101", "vehicle": "2022 Toyota RAV4" }</code></li>
+                <li>Page displays the HTTP status code and response body so participants can self-debug 401 / 404 errors</li>
+                <li>You've tested the page yourself end-to-end</li>
+            </ul>
+        </section>
+
+        <section id="prebuilt-ai-agent">
+            <h2>Pre-Built AI Agent</h2>
+            <p>The "virtual agent" branch in the lab hands off to a pre-built Webex AI Agent. You must build this agent before the lab, name it consistently, and confirm participants can reference it in their flow's AI Agent node.</p>
+
+            <h3>Recommended Agent Configuration</h3>
+            <ul class="checklist">
+                <li>Agent name: <code>farmers-renewal-agent</code> (or another name documented in the participant guide)</li>
+                <li>Agent persona: friendly Farmers renewal specialist</li>
+                <li>Agent knowledge: renewal eligibility, coverage options, payment plans (lightweight; doesn't need to be exhaustive)</li>
+                <li>Agent published and reachable via the AI Agent node in Connect</li>
+                <li>If using SMS channel: confirmed working with at least one test SMS conversation</li>
+            </ul>
+
+            <div class="instructor-note">
+                <p>The participant guide treats this agent as <em>given</em>. Participants don't build or modify it. Their job is just to wire the AI Agent node in their flow to point at this agent.</p>
+            </div>
+        </section>
+
+        <section id="dry-run">
+            <h2>Dry-Run Validation</h2>
+            <p>Run the entire lab end-to-end yourself, in the actual lab tenant, before delivery. The participant guide was drafted from public documentation, not hands-on tenant testing — there will be small UI label mismatches and possibly larger functional gaps.</p>
+
+            <h3>Critical Validations</h3>
+            <ol>
+                <li><strong>Inbound Webhook node:</strong> confirm the exact menu path, the exact node name in the palette, and the URL format the node generates after save</li>
+                <li><strong>Variable syntax:</strong> confirm whether participants reference the inbound payload as <code>$(node.trigger.phone_number)</code>, <code>$(n1.inbound.phone_number)</code>, or some other syntax in this tenant version</li>
+                <li><strong>SMS node:</strong> confirm the From Number dropdown shows the lab's pre-provisioned sender</li>
+                <li><strong>Receive node:</strong> confirm the timeout field accepts seconds (300) and the captured-message variable name</li>
+                <li><strong>Branch node:</strong> confirm "Equals (ignore case)" is the actual operator label in the tenant UI</li>
+                <li><strong>AI Agent node — CRITICAL:</strong> confirm the node accepts SMS as the channel and successfully hands off to the pre-built agent. <strong>This is the assumption most likely to break.</strong></li>
+                <li><strong>Delay node:</strong> confirm 30-second delay works and doesn't throw a "minimum delay" error</li>
+                <li><strong>End-to-end test:</strong> trigger from the static page, receive SMS, reply each option (YES, 1, 2), confirm each branch executes correctly</li>
+            </ol>
+
+            <div class="info-box warning">
+                <p>If a UI label or behavior differs from what the participant guide says, <strong>update the guide before delivery</strong> — don't ask participants to mentally map the docs to what they see. The Lab 1 dry-run revealed half a dozen UI drift issues, and patching them in the guide saved significant in-lab confusion.</p>
+            </div>
+
+            <h3>Capture Screenshots During Dry-Run</h3>
+            <p>For each of the 7 modules, take an annotated screenshot of the most likely point of confusion. Drop them in <code>~/Downloads/screenshots/</code>, name them descriptively (e.g. <code>module2-step3-webhook-properties-panel.png</code>), and ask the orchestrator to embed them in the participant guide. Lab 1's screenshot pattern is documented in its repo for reference.</p>
+        </section>
+
+        <section id="setup-checklist">
+            <h2>Final Setup Checklist</h2>
+            <p>Run through this 30 minutes before the lab starts:</p>
+            <ul class="checklist">
+                <li>Webex Connect tenant is reachable; you can log in</li>
+                <li>All 10 lab user accounts work (test 1, trust the rest)</li>
+                <li>SMS sender works: outbound + inbound</li>
+                <li>Pre-built AI Agent is published and reachable from a test flow</li>
+                <li>Static trigger page is deployed and POSTs successfully to a test flow's webhook</li>
+                <li>Dry-run executed end-to-end at least once today</li>
+                <li>Lab guide URL works: <code>https://farmers-webex-connect-lab-guide.onrender.com</code></li>
+                <li>Participants have been emailed: lab URL, their seat number, the lab time, the static trigger page URL, what to bring (laptop, mobile phone)</li>
+                <li>You've verified each participant's mobile number country is supported by the SMS sender</li>
+            </ul>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- LAB DELIVERY -->
+        <!-- ============================================================ -->
+
+        <section id="module-0">
+            <div class="module-header">
+                <h2>Module 0: Welcome &amp; Scenario Recap <span class="timing-badge">5 min</span></h2>
+                <div class="time">Cumulative: 0:00 → 0:05</div>
+                <p>Set the stage; connect Lab 2 to Lab 1; explain why proactive matters.</p>
+            </div>
+
+            <h3>Talking Points</h3>
+            <div class="talking-point">
+                "Yesterday in Lab 1 we built the brain — the AI Agent that knows about Sarah's policy. Today we're building the nervous system — the orchestration that decides when to reach out to her, on what channel, and what to do when she replies."
+            </div>
+            <div class="talking-point">
+                "Webex AI Agent Studio is reactive — Sarah has to start the conversation. Webex Connect is the only piece of the stack that lets <em>Farmers</em> initiate the conversation. That's the entire pitch for this lab."
+            </div>
+
+            <h3>What to Cover</h3>
+            <ul>
+                <li>Recap Sarah / policy <code>FRM-101</code> / 2022 Toyota RAV4 (same persona as Lab 1)</li>
+                <li>Today's scenario: Sarah's policy renews in 30 days; Farmers proactively SMSes her</li>
+                <li>The 3-way reply: confirm renewal, talk to virtual agent, talk to human</li>
+                <li>What participants will build: a 7-step Webex Connect flow they can trigger from a web page and test on their own phones</li>
+            </ul>
+        </section>
+
+        <section id="module-1">
+            <div class="module-header">
+                <h2>Module 1: Tour the Pre-Built Pieces <span class="timing-badge">5 min</span></h2>
+                <div class="time">Cumulative: 0:05 → 0:10</div>
+                <p>Show the static trigger page and the pre-built AI Agent. No participant building yet.</p>
+            </div>
+
+            <h3>What to Demo</h3>
+            <ol>
+                <li>Open the static renewal-trigger page; show the form fields</li>
+                <li>Open the pre-built AI Agent in another tab; show its persona / sample interaction</li>
+                <li>Explain: "You'll be the glue between these two — the flow you build connects the trigger to the agent."</li>
+            </ol>
+
+            <div class="instructor-note">
+                <p>Resist the urge to demo the full end-to-end flow yet. Save the "send SMS to my phone" moment for Module 6 — the participants will get more out of it if they've built the flow themselves first.</p>
+            </div>
+        </section>
+
+        <section id="module-2">
+            <div class="module-header">
+                <h2>Module 2: Create the Flow + Webhook Trigger <span class="timing-badge">10 min</span></h2>
+                <div class="time">Cumulative: 0:10 → 0:20</div>
+                <p>Each participant creates an empty flow named <code>Renewal Flow N</code> and configures the Inbound Webhook trigger node.</p>
+            </div>
+
+            <h3>Expected Sticking Points</h3>
+            <ul>
+                <li><strong>"Where do I create a flow?"</strong> — confirm the menu path during dry-run; many tenants label this differently (Service Designer / Flow Designer / Flow Builder)</li>
+                <li><strong>"Which node is the trigger?"</strong> — point them to "Inbound Webhook"; some palettes group it under "Triggers" or "Start"</li>
+                <li><strong>"Where's my webhook URL?"</strong> — they need to <em>save</em> the flow first; the URL only appears after the first save</li>
+            </ul>
+
+            <h3>Talking Points</h3>
+            <div class="talking-point">
+                "Every flow you build gets its own unique webhook URL — that's how you isolate your work from the other participants without needing separate tenants. Your URL is yours alone."
+            </div>
+        </section>
+
+        <section id="module-3">
+            <div class="module-header">
+                <h2>Module 3: Send the Renewal SMS <span class="timing-badge">10 min</span></h2>
+                <div class="time">Cumulative: 0:20 → 0:30</div>
+                <p>Add an SMS node, configure From + To + Message, wire it to the trigger.</p>
+            </div>
+
+            <h3>Expected Sticking Points</h3>
+            <ul>
+                <li><strong>Variable picker:</strong> participants need to insert <code>$(node.trigger.phone_number)</code> into the To field. The flow builder has a variable picker — show it; don't ask them to type the syntax from memory</li>
+                <li><strong>From Number dropdown:</strong> confirm the dropdown shows the lab sender; if multiple senders are listed, tell them which one to pick</li>
+                <li><strong>Message body:</strong> provide a copy/paste-able starter message in the participant guide</li>
+            </ul>
+
+            <h3>Talking Points</h3>
+            <div class="talking-point">
+                "This is the moment Connect earns its keep. With one node, you've sent a real SMS to a real phone — no SMS gateway integration, no Twilio account, no carrier paperwork. The platform abstracts all of that."
+            </div>
+        </section>
+
+        <section id="module-4">
+            <div class="module-header">
+                <h2>Module 4: Wait for Reply + Branch on Response <span class="timing-badge">15 min</span></h2>
+                <div class="time">Cumulative: 0:30 → 0:45</div>
+                <p>Add a Receive node (5-min timeout) and a Branch node with 3 conditions + default.</p>
+            </div>
+
+            <h3>This Is the Hardest Module</h3>
+            <p>Participants will struggle most here. Three distinct concepts collide: waiting for an async event, capturing its value, and conditional branching. Plan to spend the full 15 minutes and offer pair-help liberally.</p>
+
+            <h3>Expected Sticking Points</h3>
+            <ul>
+                <li><strong>Receive node placement:</strong> must come AFTER the SMS node, BEFORE the Branch — common mistake is to place it before SMS</li>
+                <li><strong>Variable name for the captured reply:</strong> usually <code>$(nX.receive.message)</code> — the variable picker is your friend</li>
+                <li><strong>Branch operator:</strong> "Equals" is case-sensitive; "Equals (ignore case)" is what they want for "YES"</li>
+                <li><strong>Forgetting the Default branch:</strong> if a reply doesn't match any condition and there's no Default, the flow silently ends. Insist on a Default branch.</li>
+            </ul>
+
+            <h3>Talking Points</h3>
+            <div class="talking-point">
+                "The Receive node is what makes Connect a 'flow' platform instead of a 'send and forget' platform. It pauses your flow, possibly for hours, until the customer responds — without you managing any state."
+            </div>
+        </section>
+
+        <section id="module-5">
+            <div class="module-header">
+                <h2>Module 5: Configure Per-Branch Actions <span class="timing-badge">10 min</span></h2>
+                <div class="time">Cumulative: 0:45 → 0:55</div>
+                <p>Wire each of the 3 branches to its outcome: confirm SMS, AI Agent handoff, human-agent SMS escalation.</p>
+            </div>
+
+            <h3>Branch-by-Branch Detail</h3>
+            <table>
+                <tr><th>Branch</th><th>Node Sequence</th><th>Notes</th></tr>
+                <tr><td><code>YES</code></td><td>SMS node (confirmation) → End</td><td>Easy. "Your renewal is confirmed."</td></tr>
+                <tr><td><code>1</code></td><td>AI Agent node → End</td><td>Configure the AI Agent node to point at <code>farmers-renewal-agent</code>.</td></tr>
+                <tr><td><code>2</code></td><td>SMS (ask channel pref) → Receive → Branch (A/B) → SMS (confirm) → End</td><td>Mini-flow inside the branch. Can simplify if running short on time.</td></tr>
+                <tr><td>Default</td><td>SMS ("didn't understand") → End</td><td>Catch-all.</td></tr>
+            </table>
+
+            <div class="red-flag">
+                <p>Branch <code>1</code> depends on the AI Agent node working with SMS. If your dry-run found that it doesn't, replace this branch with a cosmetic SMS in the participant guide and tell the room: <em>"In production this would be a real AI Agent handoff — we're using a placeholder for the lab to keep the focus on Connect orchestration."</em></p>
+            </div>
+
+            <h3>Time-Saving Move</h3>
+            <p>If you're behind schedule, the easiest cuts are: (a) drop the channel-preference sub-flow in branch <code>2</code> (just send a single confirmation SMS), or (b) skip the Default branch (accept the small risk of silent failure).</p>
+        </section>
+
+        <section id="module-6">
+            <div class="module-header">
+                <h2>Module 6: End-to-End Test &amp; Wrap <span class="timing-badge">5 min</span></h2>
+                <div class="time">Cumulative: 0:55 → 1:00</div>
+                <p>Each participant tests their flow with their own phone. This is the moment they'll remember.</p>
+            </div>
+
+            <h3>Sequence</h3>
+            <ol>
+                <li>Each participant copies their webhook URL from the trigger node</li>
+                <li>Opens the static renewal-trigger page</li>
+                <li>Pastes URL + their mobile number → clicks Send</li>
+                <li>SMS arrives within ~5 seconds</li>
+                <li>Replies <code>YES</code> (or <code>1</code> or <code>2</code>) and watches the next SMS arrive</li>
+                <li>Optional: try multiple replies in sequence to test all branches</li>
+            </ol>
+
+            <h3>Wrap Talking Points</h3>
+            <div class="talking-point">
+                "What you just built — proactive, two-way, branched, with AI handoff — would have taken weeks of integration work without a platform like Connect. We did it in 60 minutes."
+            </div>
+            <div class="talking-point">
+                "And every concept here scales horizontally — swap SMS for WhatsApp by changing one node. Add channel-preference logic. Add a delay so renewal reminders fire 30 days before expiry automatically. The flow is a starting point, not a destination."
+            </div>
+        </section>
+
+        <!-- ============================================================ -->
+        <!-- REFERENCE -->
+        <!-- ============================================================ -->
+
+        <section id="troubleshooting">
+            <h2>Troubleshooting (Live Lab)</h2>
+
+            <div class="troubleshooting-item">
+                <div class="problem">Participant clicks "Send" on static page → 401 Unauthorized</div>
+                <div class="solution">Service Key header value mismatch. Check the static page's Service Key field matches what the Inbound Webhook node expects. If the node was set to "No auth," tell them to remove the header entirely.</div>
+            </div>
+
+            <div class="troubleshooting-item">
+                <div class="problem">Participant clicks "Send" on static page → 404 Not Found</div>
+                <div class="solution">Webhook URL is wrong, or the flow isn't published. Have them re-copy the URL from the trigger node and verify the flow shows "Published" status.</div>
+            </div>
+
+            <div class="troubleshooting-item">
+                <div class="problem">Participant got the first SMS but their reply did nothing</div>
+                <div class="solution">Most likely the Receive node timed out before they replied (the default may have been 60 seconds; we recommend 300). Check the flow execution log to see exactly where it stopped. Also verify the Branch operator handles their reply's case (they replied "yes" but the branch is "Equals YES" case-sensitive).</div>
+            </div>
+
+            <div class="troubleshooting-item">
+                <div class="problem">SMS arrives garbled or with wrong content</div>
+                <div class="solution">Variable substitution failed. Look for the literal string <code>$(node.trigger.phone_number)</code> in the SMS body — that means the variable wasn't resolved. Have them re-insert via the variable picker.</div>
+            </div>
+
+            <div class="troubleshooting-item">
+                <div class="problem">Multiple SMSes arrive when only one should</div>
+                <div class="solution">Two paths in the flow are wired to SMS nodes that both fire. Have them check the flow diagram — likely a branch has 2 outgoing connectors instead of 1.</div>
+            </div>
+
+            <div class="troubleshooting-item">
+                <div class="problem">AI Agent node throws an error or doesn't hand off</div>
+                <div class="solution">Confirm the agent name in the node config exactly matches the published agent name. Confirm the agent supports SMS channel (this is the assumption flagged at the top of this guide). If unrecoverable, use the cosmetic-SMS fallback documented in the participant guide.</div>
+            </div>
+        </section>
+
+        <section id="common-questions">
+            <h2>Common Questions From Participants</h2>
+
+            <h3>"Could we trigger this from a real event, not a web page?"</h3>
+            <p>Yes — anything that can POST JSON can trigger the flow. In production, a renewal-management system fires the webhook 30 days before expiry. The static page in the lab is just a manual trigger for demo purposes.</p>
+
+            <h3>"What if the customer doesn't reply for hours?"</h3>
+            <p>Set the Receive timeout long (hours, even days). The flow waits without consuming compute. After timeout, the <code>onTimeout</code> branch fires — usually a fallback channel (email) or a callback to the renewal-management system.</p>
+
+            <h3>"Can we A/B test the message?"</h3>
+            <p>Yes — Connect has experiment/split nodes. Out of scope for this lab but a natural follow-on.</p>
+
+            <h3>"How does this compare to building the same thing in Twilio Studio / Vonage / etc.?"</h3>
+            <p>Connect's differentiators: native AI Agent handoff (single platform), tight Webex Contact Center integration (handoff to a real agent without leaving the platform), enterprise governance, and the unified Webex billing relationship. Twilio is more developer-flexible; Connect is more business-user-friendly and integrated.</p>
+
+            <h3>"Why didn't we use the Webex Connect sandbox?"</h3>
+            <p>The sandbox doesn't include the AI Agent node and lacks Live Chat. The lab tenant has the full feature set. If a participant wants to experiment after the lab, the sandbox is fine for SMS-only flows.</p>
+        </section>
+
+        <section id="lab-reset">
+            <h2>Lab Reset Procedure</h2>
+            <p>Run this between sessions to reset the tenant to a clean state:</p>
+            <ol>
+                <li>For each <code>Renewal Flow N</code>: delete or unpublish</li>
+                <li>Clear flow execution logs (optional; helps the next session debug their own runs without noise)</li>
+                <li>Verify the pre-built AI Agent is still published (sometimes deletion of associated flows can affect it; usually safe but verify)</li>
+                <li>Verify the SMS sender is still active and not over quota</li>
+                <li>Reset any per-seat counters / flags if you've added them</li>
+            </ol>
+            <p>Total reset time: ~5 minutes if no flows are deeply customized.</p>
+        </section>
+    </main>
+
+    <script>
+        // Highlight current section in nav as user scrolls
+        var sections = document.querySelectorAll('section[id]');
+        var navItems = document.querySelectorAll('.nav-item');
+        window.addEventListener('scroll', function() {
+            var current = '';
+            sections.forEach(function(s) {
+                if (window.scrollY >= s.offsetTop - 100) current = s.id;
+            });
+            navItems.forEach(function(n) {
+                n.classList.toggle('active', n.getAttribute('href') === '#' + current);
+            });
+        });
+    </script>
+</body>
+</html>

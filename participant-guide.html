@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmers Insurance - Webex Connect Lab Guide</title>
+    <style>
+        :root {
+            --cisco-blue: #3070E7;
+            --cisco-dark-blue: #0F1729;
+            --cisco-navy: #07182D;
+            --cisco-green: #22C55E;
+            --cisco-yellow: #F59E0B;
+            --cisco-orange: #FF9000;
+            --cisco-red: #EF4444;
+            --cisco-teal: #16BDEB;
+            --cisco-gray: #64748B;
+            --cisco-light-gray: #F8FAFC;
+            --cisco-secondary: #94A3B8;
+            --nav-width: 280px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--cisco-light-gray);
+            color: var(--cisco-dark-blue);
+            line-height: 1.6;
+        }
+
+        /* Navigation Sidebar */
+        .nav-sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--nav-width);
+            height: 100vh;
+            background: linear-gradient(180deg, var(--cisco-dark-blue), var(--cisco-navy));
+            overflow-y: auto;
+            z-index: 100;
+            padding-bottom: 40px;
+        }
+
+        .nav-logo {
+            padding: 24px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .nav-logo h2 {
+            color: white;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 4px;
+        }
+
+        .nav-logo .subtitle {
+            color: var(--cisco-secondary);
+            font-size: 13px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .nav-logo .badge {
+            display: inline-block;
+            background: var(--cisco-green);
+            color: white;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 10px;
+            text-transform: uppercase;
+        }
+
+        .nav-section { padding: 16px 0; }
+
+        .nav-section-title {
+            color: var(--cisco-secondary);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 20px;
+            margin-bottom: 8px;
+        }
+
+        .nav-item {
+            display: block;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            padding: 8px 20px;
+            font-size: 13px;
+            border-left: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            color: white;
+            background: rgba(255,255,255,0.05);
+            border-left-color: var(--cisco-blue);
+        }
+
+        .nav-item.level-2 { padding-left: 35px; font-size: 12px; }
+
+        /* Main Content */
+        .main-content {
+            margin-left: var(--nav-width);
+            padding: 40px;
+            max-width: 1100px;
+        }
+
+        .page-header {
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 2px solid var(--cisco-blue);
+        }
+
+        .page-header h1 {
+            font-size: 32px;
+            font-weight: 300;
+            margin-bottom: 8px;
+        }
+
+        .page-header h2 {
+            font-size: 18px;
+            font-weight: 400;
+            color: var(--cisco-gray);
+        }
+
+        .page-header .meta {
+            margin-top: 12px;
+            font-size: 14px;
+            color: var(--cisco-secondary);
+        }
+
+        section {
+            scroll-margin-top: 80px;
+            margin-bottom: 48px;
+        }
+
+        h2 { font-size: 24px; font-weight: 400; margin-bottom: 16px; color: var(--cisco-dark-blue); }
+        h3 { font-size: 20px; font-weight: 500; margin-bottom: 12px; margin-top: 32px; }
+        h4 { font-size: 18px; font-weight: 500; margin-bottom: 10px; margin-top: 24px; }
+        p { margin-bottom: 12px; color: #334155; }
+        ul, ol { margin-bottom: 16px; padding-left: 24px; }
+        li { margin-bottom: 6px; color: #334155; }
+
+        /* Info Boxes */
+        .info-box {
+            border-left: 4px solid var(--cisco-blue);
+            background: rgba(48,112,231,0.06);
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 16px 0;
+        }
+
+        .info-box.success {
+            border-left-color: var(--cisco-green);
+            background: rgba(34,197,94,0.06);
+        }
+
+        .info-box.warning {
+            border-left-color: var(--cisco-orange);
+            background: rgba(255,144,0,0.06);
+        }
+
+        /* Copy Blocks */
+        .copy-block {
+            position: relative;
+            background: #1a1a2e;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 16px 0;
+        }
+
+        .copy-block code {
+            color: #e2e8f0;
+            font-family: 'Monaco', 'Consolas', 'Courier New', monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            display: block;
+            line-height: 1.5;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: rgba(255,255,255,0.7);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover { background: rgba(255,255,255,0.2); color: white; }
+        .copy-btn.copied { background: var(--cisco-green); color: white; border-color: var(--cisco-green); }
+
+        /* Tables */
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+        th { background: var(--cisco-dark-blue); color: white; padding: 10px 14px; text-align: left; font-size: 13px; }
+        td { padding: 10px 14px; border-bottom: 1px solid #e2e8f0; font-size: 14px; }
+        tr:hover { background: rgba(48,112,231,0.03); }
+
+        /* Step Indicators */
+        .step-indicator {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin: 24px 0 16px;
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background: var(--cisco-blue);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .step-title { font-size: 18px; font-weight: 500; padding-top: 4px; }
+
+        /* Module Headers */
+        .module-header {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-left: 4px solid var(--cisco-blue);
+            border-radius: 0 8px 8px 0;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+        }
+
+        .module-header h2 { margin-bottom: 4px; }
+        .module-header .time { font-size: 14px; color: var(--cisco-blue); font-weight: 500; }
+        .module-header p { margin-top: 8px; font-size: 14px; }
+
+        /* Diagram */
+        .diagram {
+            background: #1a1a2e;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 16px 0;
+            overflow-x: auto;
+        }
+
+        .diagram pre {
+            color: #e2e8f0;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 13px;
+            line-height: 1.4;
+            white-space: pre;
+        }
+
+        /* Lab Series Banner */
+        .lab-series {
+            background: #EBF2FF;
+            border: 1px solid #BFDBFE;
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin-bottom: 28px;
+            font-size: 14px;
+            color: #1E3A8A;
+        }
+        .lab-series strong { color: #1E40AF; }
+        .lab-series a { color: #3070E7; text-decoration: none; font-weight: 500; }
+        .lab-series a:hover { text-decoration: underline; }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .nav-sidebar { display: none; }
+            .main-content { margin-left: 0; padding: 20px; }
+        }
+
+        @media print {
+            .nav-sidebar { display: none; }
+            .main-content { margin-left: 0; }
+            .copy-btn { display: none; }
+        }
+
+        /* Credential Card */
+        .credential-card {
+            background: linear-gradient(135deg, var(--cisco-dark-blue), var(--cisco-navy));
+            border-radius: 12px;
+            padding: 24px 32px;
+            color: white;
+            max-width: 480px;
+            margin: 16px 0;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+        }
+
+        .credential-card .seat-badge {
+            display: inline-block;
+            background: var(--cisco-blue);
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+        }
+
+        .credential-card .cred-row {
+            display: flex;
+            align-items: center;
+            margin: 12px 0;
+            gap: 12px;
+        }
+
+        .credential-card .cred-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--cisco-secondary);
+            min-width: 80px;
+        }
+
+        .credential-card .cred-value {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 15px;
+            background: rgba(255,255,255,0.1);
+            padding: 8px 14px;
+            border-radius: 6px;
+            flex: 1;
+            user-select: all;
+        }
+
+        .credential-card .cred-copy-btn {
+            background: rgba(255,255,255,0.15);
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.2s;
+        }
+
+        .credential-card .cred-copy-btn:hover {
+            background: var(--cisco-blue);
+        }
+
+        .credential-warning {
+            background: rgba(245, 158, 11, 0.1);
+            border: 2px solid var(--cisco-yellow);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .credential-warning h3 {
+            color: var(--cisco-yellow);
+            margin-bottom: 8px;
+        }
+
+        /* Nav-bottom credential bar */
+        .nav-credentials {
+            position: sticky;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(7,24,45,0.95), var(--cisco-navy));
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 14px 16px;
+            backdrop-filter: blur(8px);
+        }
+
+        .nav-credentials .nav-cred-title {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--cisco-secondary);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .nav-credentials .nav-cred-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .nav-credentials .nav-cred-label {
+            font-size: 10px;
+            color: var(--cisco-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            min-width: 32px;
+        }
+
+        .nav-credentials .nav-cred-value {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 11px;
+            color: white;
+            background: rgba(255,255,255,0.08);
+            padding: 5px 8px;
+            border-radius: 4px;
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .nav-credentials .nav-cred-copy {
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.5);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .nav-credentials .nav-cred-copy:hover {
+            color: white;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .nav-credentials .nav-cred-copy.copied {
+            color: var(--cisco-green);
+        }
+
+        .nav-credentials .nav-cred-copy svg {
+            width: 14px;
+            height: 14px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-sidebar">
+        <div class="nav-logo">
+            <h2>Farmers Insurance</h2>
+            <span class="subtitle">Webex Connect Lab</span>
+            <span class="badge">Participant Guide</span>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Overview</div>
+            <a href="#welcome" class="nav-item">Welcome</a>
+            <a href="#your-credentials" class="nav-item">Your Credentials</a>
+            <a href="#use-case" class="nav-item">Use Case</a>
+            <a href="#what-youll-build" class="nav-item">What You'll Build</a>
+            <a href="#architecture" class="nav-item">Architecture</a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Module 1</div>
+            <a href="#tour-pieces" class="nav-item">Tour the Pre-Built Pieces</a>
+            <a href="#tour-trigger-page" class="nav-item level-2">Static Trigger Page</a>
+            <a href="#tour-ai-agent" class="nav-item level-2">Pre-Built AI Agent</a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Module 2</div>
+            <a href="#create-flow" class="nav-item">Create Flow + Webhook</a>
+            <a href="#create-flow-step" class="nav-item level-2">Create Your Flow</a>
+            <a href="#add-webhook" class="nav-item level-2">Add Webhook Trigger</a>
+            <a href="#copy-webhook-url" class="nav-item level-2">Copy Webhook URL</a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Module 3</div>
+            <a href="#send-sms" class="nav-item">Send Renewal SMS</a>
+            <a href="#add-sms-node" class="nav-item level-2">Add SMS Node</a>
+            <a href="#configure-sms" class="nav-item level-2">Configure SMS</a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Module 4</div>
+            <a href="#wait-branch" class="nav-item">Wait for Reply + Branch</a>
+            <a href="#add-receive" class="nav-item level-2">Add Receive Node</a>
+            <a href="#add-branch" class="nav-item level-2">Add Branch Node</a>
+            <a href="#configure-conditions" class="nav-item level-2">Configure Conditions</a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Module 5</div>
+            <a href="#per-branch-actions" class="nav-item">Per-Branch Actions</a>
+            <a href="#branch-yes" class="nav-item level-2">YES Branch</a>
+            <a href="#branch-1" class="nav-item level-2">Branch 1 (AI Agent)</a>
+            <a href="#branch-2" class="nav-item level-2">Branch 2 (Live Agent)</a>
+            <a href="#branch-default" class="nav-item level-2">Default Branch</a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Module 6</div>
+            <a href="#test-flow" class="nav-item">End-to-End Test</a>
+            <a href="#trigger-test" class="nav-item level-2">Trigger Your Flow</a>
+            <a href="#test-branches" class="nav-item level-2">Test Each Branch</a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-section-title">Wrap-Up</div>
+            <a href="#what-you-built" class="nav-item">What You Built</a>
+            <a href="#next-steps" class="nav-item">Next Steps</a>
+        </div>
+
+        <!-- Persistent credential bar at bottom of nav -->
+        <div id="nav-credentials" class="nav-credentials">
+            <!-- Populated by JS based on ?seat= param -->
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="lab-series">
+            <strong>Lab 2 of 2 in the Farmers Webex CX series.</strong>
+            New to the series? Start with <a href="https://farmers-webex-ai-lab-guide.onrender.com" target="_blank" rel="noopener noreferrer">Lab 1: Build a Webex AI Agent</a> — this lab assumes the AI Agent from Lab 1 is already published and reachable.
+        </div>
+
+        <div class="page-header">
+            <h1>Webex Connect Lab</h1>
+            <h2>Farmers Insurance — Proactive Policy Renewal Outreach</h2>
+            <div class="meta">Duration: Approximately 60 minutes | Level: Hands-on | Focus: Webex Connect Flow Builder</div>
+        </div>
+
+        <!-- OVERVIEW -->
+        <section id="welcome">
+            <h2>Welcome</h2>
+            <p>Welcome to the Farmers Insurance Webex Connect Lab. In this hands-on session, you'll build a proactive SMS flow that reaches out to policyholders 30 days before their renewal, captures their reply, and routes them to the right outcome — all without a single line of code.</p>
+            <p><strong>By the end of this lab, you will have:</strong></p>
+            <ul>
+                <li>Created a Webex Connect flow triggered by a webhook</li>
+                <li>Sent a real SMS to your own phone</li>
+                <li>Captured and branched on the customer's reply</li>
+                <li>Configured per-branch actions (confirmation, AI Agent handoff, live agent escalation)</li>
+                <li>Tested the entire flow end-to-end</li>
+            </ul>
+            <p><strong>Prerequisites:</strong></p>
+            <ul>
+                <li>Access to Webex Connect (see <a href="#your-credentials">Your Lab Credentials</a> below)</li>
+                <li>A mobile phone capable of receiving SMS</li>
+                <li>A modern web browser (Chrome recommended)</li>
+            </ul>
+        </section>
+
+        <section id="your-credentials">
+            <h2>Your Lab Credentials</h2>
+            <div id="credentials-display">
+                <!-- Filled by JavaScript based on ?seat= parameter -->
+            </div>
+        </section>
+
+        <section id="use-case">
+            <h2>Use Case: "Proactive Policy Renewal"</h2>
+            <div class="info-box">
+                <strong>The Scenario:</strong> Sarah Smith's auto insurance policy (FRM-101, covering her 2022 Toyota RAV4) renews in 30 days. Instead of waiting for Sarah to call or visit the website, Farmers Insurance proactively sends her an SMS:<br><br>
+                <em>"Hi Sarah, your auto policy (FRM-101) for the 2022 Toyota RAV4 renews in 30 days. Reply YES to confirm renewal, 1 to chat with our virtual agent, or 2 to talk to a person."</em>
+            </div>
+            <p><strong>Why This Matters to Farmers Insurance:</strong></p>
+            <table>
+                <thead>
+                    <tr><th>Business Impact</th><th>Data Point</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Policies that lapse due to missed renewal</td><td>12% of all policies annually</td></tr>
+                    <tr><td>Cost to re-acquire a lapsed customer</td><td>$450 average</td></tr>
+                    <tr><td>Customer satisfaction with proactive reminders</td><td>87% positive sentiment</td></tr>
+                    <tr><td>Renewal completion rate with SMS reminder</td><td>34% higher than email-only</td></tr>
+                </tbody>
+            </table>
+            <p>This isn't just a convenience feature — it's a <strong>revenue protection mechanism</strong>. Every policy that renews automatically is one less customer shopping competitors.</p>
+
+            <h3>The Three-Way Reply</h3>
+            <p>Sarah has three options when she receives the SMS:</p>
+            <ol>
+                <li><strong>Reply "YES"</strong> — Instant confirmation. Flow sends back: <em>"Great! Your policy is renewed for another year. Confirmation #FRM-101-RENEW."</em></li>
+                <li><strong>Reply "1"</strong> — Virtual agent handoff. The Webex AI Agent (built in Lab 1) takes over the SMS conversation to answer renewal questions.</li>
+                <li><strong>Reply "2"</strong> — Live agent escalation. Flow asks: <em>"Reply A to be called back, or B to chat by SMS."</em> Then routes accordingly.</li>
+            </ol>
+            <p>If Sarah replies with anything else (or doesn't reply), the flow has a fallback: <em>"Sorry, I didn't understand. Reply YES, 1, or 2."</em></p>
+        </section>
+
+        <section id="what-youll-build">
+            <h2>What You'll Build</h2>
+            <table>
+                <thead>
+                    <tr><th>Module</th><th>What You'll Do</th><th>Time</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>0. Welcome</td><td>Understand the scenario and architecture</td><td>5 min</td></tr>
+                    <tr><td>1. Tour</td><td>See the static trigger page and pre-built AI Agent</td><td>5 min</td></tr>
+                    <tr><td>2. Webhook</td><td>Create flow, add Inbound Webhook node, copy URL</td><td>10 min</td></tr>
+                    <tr><td>3. SMS</td><td>Add SMS node, configure From/To/Message</td><td>10 min</td></tr>
+                    <tr><td>4. Reply + Branch</td><td>Add Receive node + Branch node with 3 conditions</td><td>15 min</td></tr>
+                    <tr><td>5. Per-Branch</td><td>Configure actions for YES / 1 / 2 / Default</td><td>10 min</td></tr>
+                    <tr><td>6. Test</td><td>Trigger from web page, test on your phone</td><td>5 min</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="architecture">
+            <h2>Lab Architecture</h2>
+            <div class="diagram">
+                <pre>
+┌─────────────────────┐
+│  Static Trigger     │  (You paste webhook URL + your phone number)
+│  Web Page           │
+└──────────┬──────────┘
+           │ HTTP POST
+           ▼
+┌─────────────────────┐
+│  Webex Connect      │
+│  Inbound Webhook    │  (Receives phone_number, policy_id, vehicle)
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│  SMS Node           │  "Hi Sarah, your policy renews in 30 days.
+│  (Send)             │   Reply YES, 1, or 2."
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│  Receive Node       │  (Wait up to 5 min for Sarah's reply)
+│  (Wait for SMS)     │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│  Branch Node        │  (Check reply text)
+└─────┬───┬───┬───┬───┘
+      │   │   │   │
+  YES │   │ 1 │ 2 │ Default
+      │   │   │   │
+      ▼   ▼   ▼   ▼
+    ┌───┐ ┌───┐ ┌───┐ ┌───┐
+    │SMS│ │AI │ │SMS│ │SMS│
+    │   │ │Agt│ │   │ │   │
+    └───┘ └───┘ └───┘ └───┘
+                </pre>
+            </div>
+            <p><strong>Key Concepts:</strong></p>
+            <ul>
+                <li><strong>Webhook Trigger</strong> — External system (or static web page) POSTs JSON to start the flow</li>
+                <li><strong>SMS Node</strong> — Sends SMS to a phone number (static or variable)</li>
+                <li><strong>Receive Node</strong> — Pauses the flow until an inbound SMS arrives (or timeout)</li>
+                <li><strong>Branch Node</strong> — Conditional logic: if reply = "YES", do X; if reply = "1", do Y; etc.</li>
+                <li><strong>AI Agent Node</strong> — Hands off the conversation to a Webex AI Agent (from Lab 1)</li>
+            </ul>
+        </section>
+
+        <!-- MODULE 1 -->
+        <section id="tour-pieces">
+            <div class="module-header">
+                <h2>Module 1: Tour the Pre-Built Pieces</h2>
+                <span class="time">Estimated time: 5 minutes</span>
+                <p>Before you build, see what's already prepared for you.</p>
+            </div>
+        </section>
+
+        <section id="tour-trigger-page">
+            <h3>Step 1: Open the Static Trigger Page</h3>
+            <div class="step-indicator">
+                <div class="step-number">1</div>
+                <div class="step-title">Open the Static Trigger Page</div>
+            </div>
+            <p>The static trigger page is a simple web form that POSTs a renewal event to your Connect flow. You'll use this to test your flow in Module 6.</p>
+            <ol>
+                <li>Open a new browser tab</li>
+                <li>Navigate to: <a href="renewal-trigger.html" target="_blank" rel="noopener noreferrer"><code>https://farmers-webex-connect-lab-guide.onrender.com/renewal-trigger.html</code></a></li>
+            </ol>
+            <div class="info-box warning">
+                <strong>Note:</strong> Your instructor will confirm the exact URL during the lab. If the URL above doesn't work, check the lab home page or ask your instructor.
+            </div>
+            <p>You should see a form with three fields:</p>
+            <ul>
+                <li><strong>Webhook URL</strong> — You'll paste your flow's unique webhook URL here (from Module 2)</li>
+                <li><strong>Mobile Number</strong> — Your own phone number (with country code, e.g., <code>+15551234567</code>)</li>
+                <li><strong>Service Key</strong> (optional) — Authentication header value (your instructor will provide if needed)</li>
+            </ul>
+            <p>Don't fill it out yet — just familiarize yourself with the form. You'll come back here in Module 6.</p>
+        </section>
+
+        <section id="tour-ai-agent">
+            <h3>Step 2: See the Pre-Built AI Agent</h3>
+            <div class="step-indicator">
+                <div class="step-number">2</div>
+                <div class="step-title">See the Pre-Built AI Agent</div>
+            </div>
+            <p>Your instructor has pre-built a Webex AI Agent named <strong>farmers-renewal-agent</strong> in the same tenant. This agent handles renewal-specific questions (coverage changes, payment plans, etc.).</p>
+            <p>You don't need to build or modify this agent — your flow will just reference it by name in Module 5.</p>
+            <div class="info-box">
+                <strong>Why pre-built?</strong> Building an AI Agent from scratch takes 30–45 minutes (that was Lab 1). For this lab, we're focusing on the orchestration layer — how Connect routes conversations to the right place.
+            </div>
+        </section>
+
+        <!-- MODULE 2 -->
+        <section id="create-flow">
+            <div class="module-header">
+                <h2>Module 2: Create Your Flow + Webhook Trigger</h2>
+                <span class="time">Estimated time: 10 minutes</span>
+                <p>Every flow starts with a trigger. Yours will be an Inbound Webhook.</p>
+            </div>
+        </section>
+
+        <section id="create-flow-step">
+            <h3>Step 1: Create Your Flow</h3>
+            <div class="step-indicator">
+                <div class="step-number">1</div>
+                <div class="step-title">Create Your Flow</div>
+            </div>
+            <ol>
+                <li>Log in to Webex Connect using your <a href="#your-credentials">lab credentials</a></li>
+                <li>In the left navigation, find and click <strong>Service Designer</strong> (or <strong>Flow Designer</strong>, depending on your tenant version)</li>
+                <li>Select your assigned service (your instructor will confirm the service name)</li>
+                <li>Click <strong>+ Create Flow</strong> (upper right)</li>
+                <li>Enter the flow name: <strong>Renewal Flow <span class="seat-num">N</span></strong> (where <span class="seat-num">N</span> is your seat number)</li>
+                <li>Click <strong>Create</strong></li>
+            </ol>
+            <div class="info-box warning">
+                <strong>📌 Use your seat number!</strong> Since all 10 participants share the same Webex Connect tenant, you must include your seat number in your flow name. This ensures you can easily find your flow in the shared list and avoid accidentally editing someone else's work.
+            </div>
+            <div class="info-box success">
+                <strong>✓ Checkpoint:</strong> You should now see an empty flow canvas with a node palette on the left.
+            </div>
+        </section>
+
+        <section id="add-webhook">
+            <h3>Step 2: Add the Inbound Webhook Node</h3>
+            <div class="step-indicator">
+                <div class="step-number">2</div>
+                <div class="step-title">Add the Inbound Webhook Node</div>
+            </div>
+            <ol>
+                <li>In the node palette on the left, find the <strong>Inbound Webhook</strong> node (it may be under a "Triggers" or "Start" category)</li>
+                <li>Drag the <strong>Inbound Webhook</strong> node onto the canvas</li>
+                <li>Click the node to open its properties panel on the right</li>
+                <li>Configure authentication:
+                    <ul>
+                        <li>If your instructor provided a <strong>Service Key</strong>, select <strong>Service Key</strong> from the dropdown and enter the key value</li>
+                        <li>If no key was provided, select <strong>None</strong> (acceptable for lab purposes)</li>
+                    </ul>
+                </li>
+                <li>Click <strong>Save</strong> in the top-right corner of the flow canvas</li>
+            </ol>
+            <div class="info-box warning">
+                <strong>Important:</strong> The webhook URL only appears AFTER you save the flow for the first time. If you don't see a URL yet, make sure you've clicked Save.
+            </div>
+        </section>
+
+        <section id="copy-webhook-url">
+            <h3>Step 3: Copy Your Webhook URL</h3>
+            <div class="step-indicator">
+                <div class="step-number">3</div>
+                <div class="step-title">Copy Your Webhook URL</div>
+            </div>
+            <ol>
+                <li>Click the <strong>Inbound Webhook</strong> node again to open its properties</li>
+                <li>You should now see a <strong>Webhook URL</strong> field that looks like:<br>
+                    <code>https://api.us.webexconnect.io/resources/v1/events/inbound-webhook/&lt;long-id&gt;</code>
+                </li>
+                <li>Click the <strong>Copy</strong> button next to the URL (or select and copy manually)</li>
+                <li>Paste the URL somewhere you can find it later — a text file, sticky note, or scratch browser tab</li>
+            </ol>
+            <div class="info-box warning">
+                <strong>This URL is unique to YOUR flow.</strong> Don't share it with other participants. Each person's flow has its own webhook URL. If you create a new flow, you'll get a different URL.
+            </div>
+            <div class="info-box success">
+                <strong>✓ Checkpoint:</strong> You have a saved flow with an Inbound Webhook node and a copied webhook URL.
+            </div>
+        </section>
+
+        <!-- MODULE 3 -->
+        <section id="send-sms">
+            <div class="module-header">
+                <h2>Module 3: Send the Renewal SMS</h2>
+                <span class="time">Estimated time: 10 minutes</span>
+                <p>Now you'll add an SMS node that sends the renewal reminder to Sarah's phone.</p>
+            </div>
+        </section>
+
+        <section id="add-sms-node">
+            <h3>Step 1: Add the SMS Node</h3>
+            <div class="step-indicator">
+                <div class="step-number">1</div>
+                <div class="step-title">Add the SMS Node</div>
+            </div>
+            <ol>
+                <li>In the node palette, find the <strong>SMS</strong> node</li>
+                <li>Drag it onto the canvas, placing it to the right of the Inbound Webhook node</li>
+                <li>Wire the two nodes together:
+                    <ul>
+                        <li>Click the small connection point on the <strong>Inbound Webhook</strong> node (usually labeled <code>onSuccess</code>)</li>
+                        <li>Drag to the input of the <strong>SMS</strong> node</li>
+                    </ul>
+                </li>
+            </ol>
+            <div class="info-box">
+                <strong>What does wiring do?</strong> It tells Connect: "When the webhook receives a POST, immediately run the SMS node next." Without the wire, the SMS node would never execute.
+            </div>
+        </section>
+
+        <section id="configure-sms">
+            <h3>Step 2: Configure the SMS Node</h3>
+            <div class="step-indicator">
+                <div class="step-number">2</div>
+                <div class="step-title">Configure the SMS Node</div>
+            </div>
+            <ol>
+                <li>Click the <strong>SMS</strong> node to open its properties panel</li>
+                <li>Configure the <strong>Destination</strong> (To) field:
+                    <ul>
+                        <li>Click the <strong>variable picker</strong> icon (usually a <code>{x}</code> or <code>$</code> symbol)</li>
+                        <li>Navigate to the Inbound Webhook node's output variables</li>
+                        <li>Select <code>phone_number</code> (the exact path may be <code>$(node.trigger.phone_number)</code> or <code>$(n1.inbound.phone_number)</code> depending on your tenant version)</li>
+                    </ul>
+                </li>
+            </ol>
+            <div class="info-box warning">
+                <strong>Variable syntax note:</strong> The exact variable prefix may vary by tenant version. Always use the variable picker to insert the correct syntax automatically — don't type it from memory.
+            </div>
+            <ol start="3">
+                <li>Configure the <strong>From Number</strong> field:
+                    <ul>
+                        <li>Click the dropdown and select the pre-provisioned SMS sender for the lab</li>
+                        <li>Your instructor will confirm which sender to use if multiple options appear</li>
+                    </ul>
+                </li>
+                <li>Configure the <strong>Message</strong> field. Paste the following:</li>
+            </ol>
+            <div class="copy-block">
+                <button class="copy-btn">📋 Copy</button>
+                <code>Hi Sarah, your auto policy (FRM-101) for the 2022 Toyota RAV4 renews in 30 days.
+Reply YES to confirm renewal, 1 to chat with our virtual agent, or 2 to talk to a person.</code>
+            </div>
+            <ol start="5">
+                <li>Click <strong>Save</strong> in the top-right corner</li>
+            </ol>
+            <div class="info-box success">
+                <strong>✓ Checkpoint:</strong> Your flow now has two nodes: Inbound Webhook → SMS. When triggered, it will send an SMS to the phone number provided in the webhook POST.
+            </div>
+        </section>
+
+        <!-- MODULE 4 -->
+        <section id="wait-branch">
+            <div class="module-header">
+                <h2>Module 4: Wait for Reply + Branch on Response</h2>
+                <span class="time">Estimated time: 15 minutes</span>
+                <p>This is the hardest module. You'll add a Receive node (to wait for Sarah's reply) and a Branch node (to route based on what she said).</p>
+            </div>
+        </section>
+
+        <section id="add-receive">
+            <h3>Step 1: Add the Receive Node</h3>
+            <div class="step-indicator">
+                <div class="step-number">1</div>
+                <div class="step-title">Add the Receive Node</div>
+            </div>
+            <ol>
+                <li>In the node palette, find the <strong>Receive</strong> node</li>
+                <li>Drag it onto the canvas, placing it to the right of the SMS node</li>
+                <li>Wire the SMS node's <code>onSuccess</code> output to the Receive node's input</li>
+                <li>Click the <strong>Receive</strong> node to open its properties</li>
+                <li>Configure:
+                    <ul>
+                        <li><strong>Channel:</strong> Select <strong>SMS</strong></li>
+                        <li><strong>Max Timeout:</strong> Enter <strong>300</strong> (seconds = 5 minutes)</li>
+                    </ul>
+                </li>
+                <li>Click <strong>Save</strong></li>
+            </ol>
+            <div class="info-box">
+                <strong>What does the Receive node do?</strong> It pauses your flow and waits for an inbound SMS from the same phone number. If Sarah replies within 5 minutes, the flow continues via the <code>onSuccess</code> path. If she doesn't reply, the flow exits via the <code>onTimeout</code> path (which you can wire to a fallback action).
+            </div>
+            <div class="info-box warning">
+                <strong>Session correlation:</strong> Webex Connect automatically correlates Sarah's reply to the same flow instance using her phone number. You don't need to manage session IDs manually.
+            </div>
+        </section>
+
+        <section id="add-branch">
+            <h3>Step 2: Add the Branch Node</h3>
+            <div class="step-indicator">
+                <div class="step-number">2</div>
+                <div class="step-title">Add the Branch Node</div>
+            </div>
+            <ol>
+                <li>In the node palette, find the <strong>Branch</strong> node</li>
+                <li>Drag it onto the canvas, placing it to the right of the Receive node</li>
+                <li>Wire the Receive node's <code>onSuccess</code> output to the Branch node's input</li>
+            </ol>
+            <div class="info-box">
+                <strong>Why after Receive?</strong> The Branch node needs to check the value of Sarah's reply. That value only exists after the Receive node captures it. Order matters: SMS → Receive → Branch.
+            </div>
+        </section>
+
+        <section id="configure-conditions">
+            <h3>Step 3: Configure Branch Conditions</h3>
+            <div class="step-indicator">
+                <div class="step-number">3</div>
+                <div class="step-title">Configure Branch Conditions</div>
+            </div>
+            <p>You'll create 3 conditions plus a Default branch.</p>
+            <ol>
+                <li>Click the <strong>Branch</strong> node to open its properties</li>
+                <li>Click <strong>+ Add Condition</strong> (or similar button)</li>
+                <li>Configure <strong>Branch 1</strong> (YES):
+                    <ul>
+                        <li><strong>Variable:</strong> Use the variable picker to select the Receive node's captured message (usually <code>$(nX.receive.message)</code> where <code>nX</code> is the Receive node's ID)</li>
+                        <li><strong>Operator:</strong> Select <strong>Equals (ignore case)</strong></li>
+                        <li><strong>Value:</strong> Enter <code>YES</code></li>
+                    </ul>
+                </li>
+                <li>Click <strong>+ Add Condition</strong> again</li>
+                <li>Configure <strong>Branch 2</strong> (Virtual Agent):
+                    <ul>
+                        <li><strong>Variable:</strong> Same as above (<code>$(nX.receive.message)</code>)</li>
+                        <li><strong>Operator:</strong> <strong>Equals</strong> (case-sensitive is fine for "1")</li>
+                        <li><strong>Value:</strong> Enter <code>1</code></li>
+                    </ul>
+                </li>
+                <li>Click <strong>+ Add Condition</strong> again</li>
+                <li>Configure <strong>Branch 3</strong> (Live Agent):
+                    <ul>
+                        <li><strong>Variable:</strong> Same as above</li>
+                        <li><strong>Operator:</strong> <strong>Equals</strong></li>
+                        <li><strong>Value:</strong> Enter <code>2</code></li>
+                    </ul>
+                </li>
+                <li>Ensure there is a <strong>Default</strong> branch (this should be automatic; if not, add it)</li>
+                <li>Click <strong>Save</strong></li>
+            </ol>
+            <div class="info-box warning">
+                <strong>Variable syntax reminder:</strong> The exact variable name depends on your Receive node's ID. Use the variable picker — don't type it manually. If you see <code>$(nX.receive.message)</code> in the dropdown, that's the one you want.
+            </div>
+            <div class="info-box warning">
+                <strong>Always have a Default branch!</strong> If Sarah replies with something unexpected (like "maybe" or "help"), and there's no Default branch, the flow will silently end. The Default branch is your safety net.
+            </div>
+            <div class="info-box success">
+                <strong>✓ Checkpoint:</strong> Your Branch node now has 4 outgoing paths: YES, 1, 2, and Default. You'll wire each path to a different action in Module 5.
+            </div>
+        </section>
+
+        <!-- MODULE 5 -->
+        <section id="per-branch-actions">
+            <div class="module-header">
+                <h2>Module 5: Configure Per-Branch Actions</h2>
+                <span class="time">Estimated time: 10 minutes</span>
+                <p>Now you'll wire each branch to its outcome: confirmation SMS, AI Agent handoff, live agent escalation, or fallback.</p>
+            </div>
+        </section>
+
+        <section id="branch-yes">
+            <h3>Branch 1: YES (Instant Confirmation)</h3>
+            <div class="step-indicator">
+                <div class="step-number">1</div>
+                <div class="step-title">YES Branch</div>
+            </div>
+            <ol>
+                <li>Drag a new <strong>SMS</strong> node onto the canvas</li>
+                <li>Wire the Branch node's <strong>YES</strong> output to this SMS node</li>
+                <li>Click the SMS node and configure:
+                    <ul>
+                        <li><strong>Destination:</strong> Same variable as before (<code>$(node.trigger.phone_number)</code>)</li>
+                        <li><strong>From Number:</strong> Same sender as before</li>
+                        <li><strong>Message:</strong> Paste the following:</li>
+                    </ul>
+                </li>
+            </ol>
+            <div class="copy-block">
+                <button class="copy-btn">📋 Copy</button>
+                <code>Great! Your policy is renewed for another year. Confirmation #FRM-101-RENEW.
+A copy of your updated policy will arrive by email within 24 hours.</code>
+            </div>
+            <ol start="4">
+                <li>Drag an <strong>End</strong> node onto the canvas (usually in the "Flow Control" category)</li>
+                <li>Wire the SMS node's <code>onSuccess</code> output to the End node</li>
+                <li>Click <strong>Save</strong></li>
+            </ol>
+        </section>
+
+        <section id="branch-1">
+            <h3>Branch 2: "1" (AI Agent Handoff)</h3>
+            <div class="step-indicator">
+                <div class="step-number">2</div>
+                <div class="step-title">AI Agent Branch</div>
+            </div>
+            <ol>
+                <li>Drag an <strong>AI Agent</strong> node onto the canvas (if available in your tenant)</li>
+                <li>Wire the Branch node's <strong>1</strong> output to the AI Agent node</li>
+                <li>Click the AI Agent node and configure:
+                    <ul>
+                        <li><strong>Agent Name:</strong> Select <strong>farmers-renewal-agent</strong> (or the name your instructor provided)</li>
+                        <li><strong>Channel:</strong> Ensure <strong>SMS</strong> is selected (if available)</li>
+                    </ul>
+                </li>
+                <li>Wire the AI Agent node's output to an <strong>End</strong> node</li>
+                <li>Click <strong>Save</strong></li>
+            </ol>
+            <div class="info-box warning">
+                <strong>AI Agent SMS Caveat:</strong> If the AI Agent node isn't supporting SMS in your tenant, your instructor will guide you to a fallback: replace this branch with a cosmetic SMS like <em>"A virtual agent will reach out shortly."</em> Flow logic stays the same; only the live demo magic is reduced. See the <a href="faq.html#ai-agent" target="_blank" rel="noopener noreferrer">FAQ</a> for more details.
+            </div>
+        </section>
+
+        <section id="branch-2">
+            <h3>Branch 3: "2" (Live Agent Escalation)</h3>
+            <div class="step-indicator">
+                <div class="step-number">3</div>
+                <div class="step-title">Live Agent Branch</div>
+            </div>
+            <p>This branch is a mini-flow: ask the customer how they want to be contacted (call or SMS), then confirm.</p>
+            <ol>
+                <li>Drag a new <strong>SMS</strong> node onto the canvas</li>
+                <li>Wire the Branch node's <strong>2</strong> output to this SMS node</li>
+                <li>Configure the SMS node:
+                    <ul>
+                        <li><strong>Destination:</strong> Same variable as before</li>
+                        <li><strong>From Number:</strong> Same sender</li>
+                        <li><strong>Message:</strong> <code>Sure! Reply A to be called back, or B to chat by SMS.</code></li>
+                    </ul>
+                </li>
+                <li>Drag a new <strong>Receive</strong> node onto the canvas</li>
+                <li>Wire the SMS node's <code>onSuccess</code> to the Receive node</li>
+                <li>Configure the Receive node:
+                    <ul>
+                        <li><strong>Channel:</strong> SMS</li>
+                        <li><strong>Max Timeout:</strong> 300 seconds</li>
+                    </ul>
+                </li>
+                <li>Drag a new <strong>Branch</strong> node onto the canvas</li>
+                <li>Wire the Receive node's <code>onSuccess</code> to the Branch node</li>
+                <li>Configure the Branch node with 2 conditions + Default:
+                    <ul>
+                        <li><strong>Condition 1:</strong> <code>$(nY.receive.message)</code> Equals (ignore case) <code>A</code></li>
+                        <li><strong>Condition 2:</strong> <code>$(nY.receive.message)</code> Equals (ignore case) <code>B</code></li>
+                        <li><strong>Default:</strong> (automatic)</li>
+                    </ul>
+                </li>
+            </ol>
+            <p>Now wire each of the 3 sub-branches to an SMS node + End node:</p>
+            <h4>Sub-Branch A (Call Back)</h4>
+            <ul>
+                <li>SMS message: <code>An agent will call you within 15 minutes.</code></li>
+                <li>Wire to End node</li>
+            </ul>
+            <h4>Sub-Branch B (SMS Chat)</h4>
+            <ul>
+                <li>SMS message: <code>An agent will text you shortly. Look for a message from this number.</code></li>
+                <li>Wire to End node</li>
+            </ul>
+            <h4>Sub-Branch Default (Didn't Understand)</h4>
+            <ul>
+                <li>SMS message: <code>Didn't catch that. An agent will reach out shortly.</code></li>
+                <li>Wire to End node</li>
+            </ul>
+            <ol start="10">
+                <li>Click <strong>Save</strong></li>
+            </ol>
+            <div class="info-box">
+                <strong>Why so many nodes?</strong> This branch demonstrates a common pattern: <em>progressive disclosure</em>. Instead of asking "How do you want to be contacted?" in the first SMS (which would be overwhelming), we wait until Sarah chooses "2" (live agent), then ask for her preference. Each step narrows the conversation.
+            </div>
+        </section>
+
+        <section id="branch-default">
+            <h3>Branch 4: Default (Fallback)</h3>
+            <div class="step-indicator">
+                <div class="step-number">4</div>
+                <div class="step-title">Default Branch</div>
+            </div>
+            <ol>
+                <li>Drag a new <strong>SMS</strong> node onto the canvas</li>
+                <li>Wire the Branch node's <strong>Default</strong> output to this SMS node</li>
+                <li>Configure the SMS node:
+                    <ul>
+                        <li><strong>Destination:</strong> Same variable as before</li>
+                        <li><strong>From Number:</strong> Same sender</li>
+                        <li><strong>Message:</strong> <code>Sorry, I didn't understand. Reply YES, 1, or 2.</code></li>
+                    </ul>
+                </li>
+                <li>Wire the SMS node's <code>onSuccess</code> to an <strong>End</strong> node</li>
+                <li>Click <strong>Save</strong></li>
+            </ol>
+            <div class="info-box success">
+                <strong>✓ Checkpoint:</strong> All 4 branches are now wired. Your flow is functionally complete. Time to publish and test!
+            </div>
+        </section>
+
+        <section id="publish-flow">
+            <h3>Step 5: Publish Your Flow</h3>
+            <div class="step-indicator">
+                <div class="step-number">5</div>
+                <div class="step-title">Publish Your Flow</div>
+            </div>
+            <p>Saving creates a draft. Publishing makes the flow live and callable.</p>
+            <ol>
+                <li>Click <strong>Publish</strong> in the top-right corner (next to Save)</li>
+                <li>Confirm the publish action</li>
+            </ol>
+            <div class="info-box warning">
+                <strong>Draft vs. Published:</strong> If your flow is in Draft state, the webhook will return a 404 error when you try to trigger it. Always publish after making changes.
+            </div>
+        </section>
+
+        <!-- MODULE 6 -->
+        <section id="test-flow">
+            <div class="module-header">
+                <h2>Module 6: End-to-End Test</h2>
+                <span class="time">Estimated time: 5 minutes</span>
+                <p>This is the moment you've been building toward: send a real SMS to your own phone and watch the flow execute.</p>
+            </div>
+        </section>
+
+        <section id="trigger-test">
+            <h3>Step 1: Trigger Your Flow</h3>
+            <div class="step-indicator">
+                <div class="step-number">1</div>
+                <div class="step-title">Trigger Your Flow</div>
+            </div>
+            <ol>
+                <li>Copy your <strong>Inbound Webhook URL</strong> from Module 2 (if you don't have it handy, click the Inbound Webhook node in your flow and copy it again)</li>
+                <li>Open the static renewal-trigger web page in a new tab:<br>
+                    <a href="renewal-trigger.html" target="_blank" rel="noopener noreferrer"><code>https://farmers-webex-connect-lab-guide.onrender.com/renewal-trigger.html</code></a>
+                </li>
+                <li>Paste your webhook URL into the <strong>Webhook URL</strong> field</li>
+                <li>Enter your mobile number in the <strong>Mobile Number</strong> field (include country code, e.g., <code>+15551234567</code>)</li>
+                <li>If your instructor provided a Service Key, enter it in the <strong>Service Key</strong> field (otherwise leave blank)</li>
+                <li>Click <strong>Send Renewal Notice</strong></li>
+            </ol>
+            <div class="info-box success">
+                <strong>What to expect:</strong> Within ~5 seconds, you should receive an SMS on your phone with the renewal message. The static page will show the HTTP response code (200 = success, 401 = auth error, 404 = flow not found).
+            </div>
+            <div class="info-box warning">
+                <strong>Troubleshooting:</strong> If you don't receive the SMS, check:
+                <ul>
+                    <li>Phone number format (must include country code, e.g., <code>+1</code> for US)</li>
+                    <li>Flow is <strong>Published</strong> (not Draft)</li>
+                    <li>Static page shows <strong>200 OK</strong> response (if 401 or 404, see <a href="faq.html#troubleshooting" target="_blank" rel="noopener noreferrer">FAQ</a>)</li>
+                    <li>Your country is supported by the lab tenant's SMS sender (ask your instructor)</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="test-branches">
+            <h3>Step 2: Test Each Branch</h3>
+            <div class="step-indicator">
+                <div class="step-number">2</div>
+                <div class="step-title">Test Each Branch</div>
+            </div>
+            <p>Once you receive the first SMS, reply to test each branch:</p>
+            <ol>
+                <li><strong>Reply "YES"</strong> — You should receive the confirmation SMS within ~3 seconds</li>
+                <li>Re-trigger the flow from the static page (paste webhook URL + your number again)</li>
+                <li><strong>Reply "1"</strong> — If the AI Agent node is working, you'll be handed off to the virtual agent. If not, you'll receive the fallback SMS.</li>
+                <li>Re-trigger the flow again</li>
+                <li><strong>Reply "2"</strong> — You should receive the follow-up SMS asking "A or B". Reply with either letter and observe the confirmation.</li>
+                <li>(Optional) Re-trigger and reply with something random like "maybe" — you should receive the Default branch fallback SMS.</li>
+            </ol>
+            <div class="info-box">
+                <strong>What if my reply doesn't trigger anything?</strong> Check the flow execution logs in Webex Connect (usually under "Logs" or "Flow Executions" in the left nav). You'll see exactly which nodes ran, what variables were captured, and where the flow stopped. Common issues:
+                <ul>
+                    <li>Receive node timed out before you replied (bump timeout to 300 seconds)</li>
+                    <li>Branch condition is case-sensitive and you replied "yes" instead of "YES" (use "Equals (ignore case)")</li>
+                    <li>No Default branch, so unexpected replies silently end the flow</li>
+                </ul>
+            </div>
+            <div class="info-box success">
+                <strong>🎉 Congratulations!</strong> You've built a working proactive SMS flow with branching, AI Agent handoff, and live agent escalation — all in under 60 minutes.
+            </div>
+        </section>
+
+        <!-- WRAP-UP -->
+        <section id="what-you-built">
+            <h2>What You Built</h2>
+            <p>In this lab, you created a production-ready pattern for proactive customer outreach:</p>
+            <ul>
+                <li><strong>Webhook-triggered flow</strong> — Any system that can POST JSON can start this flow (CRM, renewal management system, scheduled job)</li>
+                <li><strong>Two-way SMS conversation</strong> — Not just broadcast; you captured Sarah's reply and routed based on her intent</li>
+                <li><strong>Conditional branching</strong> — Different outcomes for different replies, with a safety-net Default branch</li>
+                <li><strong>AI Agent handoff</strong> — Seamless transition from flow orchestration to conversational AI</li>
+                <li><strong>Progressive disclosure</strong> — Asking follow-up questions only when needed (e.g., "A or B" only after Sarah chose "2")</li>
+            </ul>
+            <p><strong>Why this matters:</strong> You didn't write a single line of code. No SMS gateway integration, no session management, no state machines. Webex Connect abstracted all of that. What would have taken weeks of engineering work, you built in an hour.</p>
+        </section>
+
+        <section id="next-steps">
+            <h2>Next Steps</h2>
+            <p>Here are some ways to extend what you built:</p>
+            <ol>
+                <li><strong>Swap SMS for WhatsApp</strong> — Change the SMS nodes to WhatsApp nodes. Same logic, different channel. Webex Connect supports WhatsApp, Apple Messages for Business, Facebook Messenger, and more.</li>
+                <li><strong>Add scheduled triggers</strong> — Instead of manually triggering from a web page, configure a scheduled job that fires the webhook 30 days before each policy's renewal date (pulled from a CRM or policy management system).</li>
+                <li><strong>A/B test message variants</strong> — Use Connect's experiment nodes to test different message wording and see which gets higher reply rates.</li>
+                <li><strong>Real human agent handoff</strong> — Integrate with Webex Contact Center to route the "2" branch to a live agent queue instead of just sending a confirmation SMS.</li>
+                <li><strong>Add delay nodes</strong> — If Sarah doesn't reply within 5 minutes, wait 24 hours and send a follow-up SMS: <em>"Just checking in — your policy renews in 29 days. Reply YES to confirm."</em></li>
+            </ol>
+            <p><strong>Want to experiment more?</strong> Sign up for a free <a href="https://sandbox.us.webexconnect.io/self-sign-up" target="_blank" rel="noopener noreferrer">Webex Connect Sandbox</a> account. You'll get 10,000 free messages (SMS + WhatsApp combined) and access to most of the same nodes you used in this lab.</p>
+        </section>
+
+        <section id="credentials-bottom">
+            <h2>Your Lab Credentials (Reference)</h2>
+            <div id="credentials-display-bottom">
+                <!-- Filled by JavaScript, same as top -->
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Lab user credentials (matches index.html)
+        var labUsers = [
+            { username: 'labuser01@farmers-connect.example', password: 'C1sco12345!' },
+            { username: 'labuser02@farmers-connect.example', password: 'C1sco12345!' },
+            { username: 'labuser03@farmers-connect.example', password: 'C1sco12345!' },
+            { username: 'labuser04@farmers-connect.example', password: 'C1sco12345!' },
+            { username: 'labuser05@farmers-connect.example', password: 'C1sco12345!' },
+            { username: 'labuser06@farmers-connect.example', password: 'C1sco12345!' },
+            { username: 'labuser07@farmers-connect.example', password: 'C1sco12345!' },
+            { username: 'labuser08@farmers-connect.example', password: 'C1sco12345!' },
+            { username: 'labuser09@farmers-connect.example', password: 'C1sco12345!' },
+            { username: 'labuser10@farmers-connect.example', password: 'C1sco12345!' },
+        ];
+
+        // Read seat number from URL param or localStorage
+        var urlParams = new URLSearchParams(window.location.search);
+        var seat = urlParams.get('seat');
+        if (seat) {
+            localStorage.setItem('seat', seat);
+        } else {
+            seat = localStorage.getItem('seat');
+        }
+
+        // Populate credentials if seat is known
+        if (seat && seat >= 1 && seat <= 10) {
+            var user = labUsers[seat - 1];
+            var credHTML = '<div class="credential-card">' +
+                '<div class="seat-badge">Seat ' + seat + '</div>' +
+                '<div class="cred-row">' +
+                '<div class="cred-label">Username</div>' +
+                '<div class="cred-value">' + user.username + '</div>' +
+                '<button class="cred-copy-btn" onclick="copyToClipboard(\'' + user.username + '\', this)">Copy</button>' +
+                '</div>' +
+                '<div class="cred-row">' +
+                '<div class="cred-label">Password</div>' +
+                '<div class="cred-value">' + user.password + '</div>' +
+                '<button class="cred-copy-btn" onclick="copyToClipboard(\'' + user.password + '\', this)">Copy</button>' +
+                '</div>' +
+                '</div>';
+            document.getElementById('credentials-display').innerHTML = credHTML;
+            document.getElementById('credentials-display-bottom').innerHTML = credHTML;
+
+            // Populate nav credential bar
+            var navCredHTML = '<div class="nav-cred-title">Your Credentials (Seat ' + seat + ')</div>' +
+                '<div class="nav-cred-row">' +
+                '<div class="nav-cred-label">User</div>' +
+                '<div class="nav-cred-value">' + user.username + '</div>' +
+                '<button class="nav-cred-copy" onclick="copyToClipboard(\'' + user.username + '\', this)">' +
+                '<svg fill="currentColor" viewBox="0 0 16 16"><path d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2z"/></svg>' +
+                '</button>' +
+                '</div>' +
+                '<div class="nav-cred-row">' +
+                '<div class="nav-cred-label">Pass</div>' +
+                '<div class="nav-cred-value">' + user.password + '</div>' +
+                '<button class="nav-cred-copy" onclick="copyToClipboard(\'' + user.password + '\', this)">' +
+                '<svg fill="currentColor" viewBox="0 0 16 16"><path d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2z"/></svg>' +
+                '</button>' +
+                '</div>';
+            document.getElementById('nav-credentials').innerHTML = navCredHTML;
+
+            // Replace all .seat-num placeholders with actual seat number
+            var seatNumElements = document.querySelectorAll('.seat-num');
+            seatNumElements.forEach(function(el) {
+                el.textContent = seat;
+            });
+        } else {
+            var warningHTML = '<div class="credential-warning">' +
+                '<h3>⚠ No Seat Number Selected</h3>' +
+                '<p>Please return to the <a href="index.html">lab home page</a> and select your seat number (1–10) to view your credentials.</p>' +
+                '</div>';
+            document.getElementById('credentials-display').innerHTML = warningHTML;
+            document.getElementById('credentials-display-bottom').innerHTML = warningHTML;
+        }
+
+        // Copy to clipboard helper
+        function copyToClipboard(text, button) {
+            navigator.clipboard.writeText(text).then(function() {
+                var originalText = button.textContent;
+                button.textContent = 'Copied!';
+                button.classList.add('copied');
+                setTimeout(function() {
+                    button.textContent = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        // Copy button functionality for code blocks
+        document.querySelectorAll('.copy-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var code = this.parentElement.querySelector('code').textContent;
+                navigator.clipboard.writeText(code).then(function() {
+                    btn.textContent = '✓ Copied';
+                    btn.classList.add('copied');
+                    setTimeout(function() {
+                        btn.textContent = '📋 Copy';
+                        btn.classList.remove('copied');
+                    }, 2000);
+                });
+            });
+        });
+
+        // Highlight current section in nav as user scrolls
+        var sections = document.querySelectorAll('section[id]');
+        var navItems = document.querySelectorAll('.nav-item');
+        window.addEventListener('scroll', function() {
+            var current = '';
+            sections.forEach(function(s) {
+                if (window.scrollY >= s.offsetTop - 100) current = s.id;
+            });
+            navItems.forEach(function(n) {
+                n.classList.toggle('active', n.getAttribute('href') === '#' + current);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: farmers-webex-connect-lab-guide
+    env: static
+    staticPublishPath: .
+    buildCommand: ""

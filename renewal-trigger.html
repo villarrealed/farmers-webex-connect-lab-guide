@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Renewal Trigger — Farmers Insurance Lab</title>
+    <style>
+        :root {
+            --cisco-blue: #3070E7;
+            --cisco-dark-blue: #0F1729;
+            --cisco-navy: #07182D;
+            --cisco-green: #22C55E;
+            --cisco-orange: #FF9000;
+            --cisco-red: #EF4444;
+            --cisco-gray: #64748B;
+            --cisco-light-gray: #F8FAFC;
+            --border: #E2E8F0;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--cisco-light-gray);
+            color: var(--cisco-dark-blue);
+            line-height: 1.6;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        .container { max-width: 720px; margin: 0 auto; }
+
+        header { margin-bottom: 32px; }
+        header h1 { font-size: 28px; font-weight: 300; margin-bottom: 6px; }
+        header .subtitle { color: var(--cisco-gray); font-size: 15px; }
+        header .lab-link { font-size: 13px; margin-top: 10px; }
+        header .lab-link a { color: var(--cisco-blue); text-decoration: none; font-weight: 500; }
+        header .lab-link a:hover { text-decoration: underline; }
+
+        .scenario-card {
+            background: linear-gradient(135deg, var(--cisco-dark-blue), var(--cisco-navy));
+            color: white;
+            border-radius: 12px;
+            padding: 24px 28px;
+            margin-bottom: 28px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+        }
+        .scenario-card .label {
+            display: inline-block;
+            background: var(--cisco-orange);
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+        .scenario-card h2 { font-size: 18px; font-weight: 500; margin-bottom: 8px; }
+        .scenario-card p { font-size: 14px; color: rgba(255,255,255,0.85); margin: 0; }
+
+        .form-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 28px 32px;
+            margin-bottom: 24px;
+        }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--cisco-dark-blue);
+        }
+        .form-group .hint {
+            font-size: 12px;
+            color: var(--cisco-gray);
+            margin-top: 4px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Monaco', 'Consolas', monospace;
+            transition: border-color 0.15s;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--cisco-blue);
+            box-shadow: 0 0 0 3px rgba(48,112,231,0.1);
+        }
+
+        .send-btn {
+            background: var(--cisco-blue);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.15s;
+        }
+        .send-btn:hover:not(:disabled) { background: #245BC4; }
+        .send-btn:disabled { background: #94A3B8; cursor: not-allowed; }
+        .send-btn.loading { opacity: 0.7; }
+
+        .response-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-top: 24px;
+            display: none;
+        }
+        .response-card.show { display: block; }
+
+        .response-status {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 14px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .status-badge.success { background: rgba(34,197,94,0.15); color: #166534; }
+        .status-badge.error { background: rgba(239,68,68,0.15); color: #991B1B; }
+        .status-badge.pending { background: rgba(48,112,231,0.15); color: #1E40AF; }
+
+        .response-body {
+            background: #1a1a2e;
+            color: #e2e8f0;
+            padding: 14px 18px;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: 240px;
+            overflow-y: auto;
+        }
+
+        .help-box {
+            background: rgba(48,112,231,0.06);
+            border-left: 4px solid var(--cisco-blue);
+            padding: 14px 18px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #334155;
+        }
+        .help-box strong { color: var(--cisco-dark-blue); }
+
+        .payload-preview {
+            margin-top: 16px;
+            padding: 14px 18px;
+            background: #F8FAFC;
+            border: 1px dashed var(--border);
+            border-radius: 8px;
+            font-size: 12px;
+            color: var(--cisco-gray);
+        }
+        .payload-preview .label {
+            font-weight: 600;
+            color: var(--cisco-dark-blue);
+            display: block;
+            margin-bottom: 6px;
+        }
+        .payload-preview pre {
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 12px;
+            color: #334155;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Renewal Trigger</h1>
+            <p class="subtitle">Lab utility — fires a renewal event into your Webex Connect flow</p>
+            <p class="lab-link">← <a href="participant-guide.html">Back to Participant Guide</a></p>
+        </header>
+
+        <div class="scenario-card">
+            <span class="label">Lab Scenario</span>
+            <h2>Sarah's auto policy renews in 30 days</h2>
+            <p>Click <strong>Send Renewal Notice</strong> below to POST a renewal event to your Webex Connect flow's webhook. Your flow will text Sarah's mobile (the number you enter) and walk her through the renewal options you built.</p>
+        </div>
+
+        <div class="form-card">
+            <form id="renewal-form">
+                <div class="form-group">
+                    <label for="webhook-url">Your Webex Connect Webhook URL</label>
+                    <input type="url" id="webhook-url" placeholder="https://api.us.webexconnect.io/resources/v1/events/inbound-webhook/..." required>
+                    <p class="hint">Copy this from the Inbound Webhook node in your flow (after you save the flow).</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone-number">Sarah's Mobile Number (use your own for testing)</label>
+                    <input type="tel" id="phone-number" placeholder="+15551234567" required pattern="^\+[1-9]\d{6,14}$">
+                    <p class="hint">Include country code with a leading +. Example: <code>+15551234567</code></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="service-key">Service Key (optional)</label>
+                    <input type="text" id="service-key" placeholder="Leave blank if your webhook is set to no auth">
+                    <p class="hint">Sent as the <code>key</code> header. Your instructor will share this if needed.</p>
+                </div>
+
+                <button type="submit" class="send-btn" id="send-btn">Send Renewal Notice</button>
+            </form>
+
+            <div class="payload-preview">
+                <span class="label">Payload (preview)</span>
+<pre id="payload-preview">{
+  "phone_number": "+15551234567",
+  "policy_id": "FRM-101",
+  "policyholder_name": "Sarah Smith",
+  "vehicle": "2022 Toyota RAV4",
+  "renewal_date": "2026-06-04"
+}</pre>
+            </div>
+
+            <div class="help-box">
+                <strong>Tip:</strong> If you don't see an SMS within ~10 seconds, check the response panel below for HTTP status. <strong>401</strong> = wrong Service Key. <strong>404</strong> = wrong webhook URL or flow not published. <strong>200</strong> = the request reached Connect; check the flow execution log next.
+            </div>
+        </div>
+
+        <div class="response-card" id="response-card">
+            <div class="response-status">
+                <span>Webhook response:</span>
+                <span class="status-badge" id="status-badge">—</span>
+            </div>
+            <div class="response-body" id="response-body">Waiting for response…</div>
+        </div>
+    </div>
+
+    <script>
+        var form = document.getElementById('renewal-form');
+        var sendBtn = document.getElementById('send-btn');
+        var responseCard = document.getElementById('response-card');
+        var statusBadge = document.getElementById('status-badge');
+        var responseBody = document.getElementById('response-body');
+        var payloadPreview = document.getElementById('payload-preview');
+        var phoneInput = document.getElementById('phone-number');
+
+        // Live-update payload preview as user types phone number
+        phoneInput.addEventListener('input', function() {
+            var phone = phoneInput.value.trim() || '+15551234567';
+            payloadPreview.textContent = JSON.stringify({
+                phone_number: phone,
+                policy_id: 'FRM-101',
+                policyholder_name: 'Sarah Smith',
+                vehicle: '2022 Toyota RAV4',
+                renewal_date: '2026-06-04'
+            }, null, 2);
+        });
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            var webhookUrl = document.getElementById('webhook-url').value.trim();
+            var phone = phoneInput.value.trim();
+            var serviceKey = document.getElementById('service-key').value.trim();
+
+            var payload = {
+                phone_number: phone,
+                policy_id: 'FRM-101',
+                policyholder_name: 'Sarah Smith',
+                vehicle: '2022 Toyota RAV4',
+                renewal_date: '2026-06-04'
+            };
+
+            // Show response card in pending state
+            responseCard.classList.add('show');
+            statusBadge.textContent = 'Sending…';
+            statusBadge.className = 'status-badge pending';
+            responseBody.textContent = 'POSTing to ' + webhookUrl + '\n\nPayload:\n' + JSON.stringify(payload, null, 2);
+
+            sendBtn.disabled = true;
+            sendBtn.classList.add('loading');
+            sendBtn.textContent = 'Sending…';
+
+            var headers = { 'Content-Type': 'application/json' };
+            if (serviceKey) headers['key'] = serviceKey;
+
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify(payload)
+            }).then(function(res) {
+                return res.text().then(function(text) {
+                    return { status: res.status, statusText: res.statusText, body: text };
+                });
+            }).then(function(result) {
+                if (result.status >= 200 && result.status < 300) {
+                    statusBadge.textContent = result.status + ' OK';
+                    statusBadge.className = 'status-badge success';
+                } else {
+                    statusBadge.textContent = result.status + ' ' + result.statusText;
+                    statusBadge.className = 'status-badge error';
+                }
+                var bodyText = result.body || '(empty response body)';
+                try {
+                    bodyText = JSON.stringify(JSON.parse(result.body), null, 2);
+                } catch (e) { /* not JSON, leave as-is */ }
+                responseBody.textContent =
+                    'POST ' + webhookUrl + '\n' +
+                    'Status: ' + result.status + ' ' + result.statusText + '\n\n' +
+                    'Response body:\n' + bodyText + '\n\n' +
+                    (result.status >= 200 && result.status < 300
+                        ? '✓ Request reached Webex Connect. Check your phone for the SMS within ~10 seconds. If no SMS, check the flow execution log in Webex Connect.'
+                        : '✗ Request did not succeed. See troubleshooting in the participant guide.');
+            }).catch(function(err) {
+                statusBadge.textContent = 'Network Error';
+                statusBadge.className = 'status-badge error';
+                responseBody.textContent =
+                    'POST ' + webhookUrl + '\n\n' +
+                    'Failed to send: ' + err.message + '\n\n' +
+                    'Common causes:\n' +
+                    '  • Webhook URL is malformed\n' +
+                    '  • CORS blocked by browser (try from a different network or check console)\n' +
+                    '  • No internet connection\n' +
+                    '  • Webex Connect endpoint is unreachable';
+            }).finally(function() {
+                sendBtn.disabled = false;
+                sendBtn.classList.remove('loading');
+                sendBtn.textContent = 'Send Renewal Notice';
+            });
+        });
+    </script>
+</body>
+</html>
